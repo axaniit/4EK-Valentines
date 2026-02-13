@@ -1,881 +1,597 @@
-<!-- =========================
-4EK Valentines Mailboxes (GitHub Pages) — FULL REPLACE
-- No sign-in required to read or send
-- Uses your Apps Script Web App as the backend
-- 25 cute Valentine mailboxes (first name only)
-========================= -->
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>4EK Valentines Mailboxes 💌</title>
-  <meta name="color-scheme" content="light">
+  <title>4EK Valentine Mailboxes 💌</title>
+
+  <!-- Cute Valentine fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
+
   <style>
     :root{
-      --bg:#fff5f8;
-      --card:#ffffff;
-      --ink:#1c0f16;
-      --muted:#6b3a4f;
-      --pink:#ff4d87;
-      --pink2:#ff2d73;
+      --bg1:#fff1f6;
+      --bg2:#ffe3ee;
+      --ink:#2a0f1a;
+      --muted:#6a2b43;
+      --pink:#ff4f93;
+      --hot:#ff2f6d;
       --red:#e11d48;
-      --gold:#C8A64B;
-      --shadow: 0 12px 30px rgba(0,0,0,.12);
-      --ring: 0 0 0 3px rgba(255,77,135,.18);
-      --radius:18px;
-      --radius2:22px;
-      font-synthesis-weight:none;
+      --card:#ffffffcc;
+      --shadow: 0 18px 40px rgba(0,0,0,.10);
+      --shadow2: 0 10px 24px rgba(0,0,0,.10);
+      --radius: 18px;
     }
-    *{box-sizing:border-box}
+
+    *{ box-sizing:border-box; }
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      font-family: "Nunito", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       color:var(--ink);
       background:
-        radial-gradient(900px 400px at 12% -10%, rgba(255,77,135,.20), transparent 60%),
-        radial-gradient(900px 420px at 92% 0%, rgba(225,29,72,.16), transparent 58%),
-        linear-gradient(180deg, #fff5f8, #ffeaf1 55%, #fff5f8);
+        radial-gradient(1200px 600px at 10% 10%, var(--bg2), transparent 60%),
+        radial-gradient(900px 500px at 90% 20%, #ffe9f2, transparent 55%),
+        radial-gradient(900px 500px at 50% 90%, #ffe7f1, transparent 55%),
+        linear-gradient(180deg, var(--bg1), #ffffff);
       min-height:100vh;
     }
-    header{
-      padding:26px 16px 12px;
-      text-align:center;
+
+    /* floating hearts background */
+    .hearts{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:.6;
+      background-image:
+        radial-gradient(circle at 20% 30%, rgba(255,79,147,.18) 0 2px, transparent 3px),
+        radial-gradient(circle at 70% 25%, rgba(225,29,72,.14) 0 2px, transparent 3px),
+        radial-gradient(circle at 40% 70%, rgba(255,47,109,.12) 0 2px, transparent 3px),
+        radial-gradient(circle at 85% 75%, rgba(255,79,147,.12) 0 2px, transparent 3px);
+      background-size: 160px 160px, 220px 220px, 260px 260px, 240px 240px;
+      animation: drift 14s linear infinite;
+      filter: blur(.2px);
     }
-    .badge{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      padding:10px 14px;
-      border-radius:999px;
-      background:rgba(255,255,255,.65);
-      border:1px solid rgba(255,77,135,.25);
-      box-shadow: 0 8px 20px rgba(0,0,0,.08);
-      backdrop-filter: blur(6px);
+    @keyframes drift{
+      from{ transform: translate3d(0,0,0); }
+      to{ transform: translate3d(-40px, 30px, 0); }
     }
-    .badge .dot{
-      width:10px;height:10px;border-radius:50%;
-      background: linear-gradient(180deg,var(--pink),var(--red));
-      box-shadow: 0 0 0 4px rgba(255,77,135,.18);
-    }
-    h1{
-      margin:12px 0 6px;
-      font-size: clamp(26px, 4vw, 40px);
-      letter-spacing:.2px;
-    }
-    .sub{
-      margin:0 auto;
-      max-width:880px;
-      color:var(--muted);
-      line-height:1.45;
-      font-size:15px;
-    }
-    .sub strong{color:var(--ink)}
+
     .wrap{
       max-width:1100px;
       margin: 0 auto;
-      padding: 14px 16px 30px;
+      padding: 28px 16px 60px;
+      position:relative;
+      z-index:1;
     }
-    .topbar{
+
+    header{
       display:flex;
-      gap:12px;
-      align-items:center;
-      justify-content:space-between;
-      flex-wrap:wrap;
-      margin: 16px 0 12px;
-    }
-    .search{
-      flex: 1 1 260px;
-      max-width: 420px;
-      display:flex;
-      align-items:center;
+      flex-direction:column;
       gap:10px;
-      background: rgba(255,255,255,.75);
-      border:1px solid rgba(255,77,135,.25);
-      border-radius: 999px;
-      padding: 10px 14px;
-      box-shadow: 0 10px 24px rgba(0,0,0,.08);
+      align-items:center;
+      text-align:center;
+      margin: 10px 0 22px;
     }
-    .search input{
-      border:none;
-      outline:none;
-      background:transparent;
-      width:100%;
-      font-size:14px;
-      color:var(--ink);
+    .title{
+      font-family:"Pacifico", cursive;
+      font-size: 42px;
+      line-height:1.05;
+      margin:0;
+      color: var(--red);
+      text-shadow: 0 6px 18px rgba(225,29,72,.15);
+    }
+    .subtitle{
+      margin:0;
+      color: var(--muted);
+      font-size: 15px;
+      max-width: 780px;
+    }
+
+    .pillbar{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:center;
+      margin-top:6px;
     }
     .pill{
-      display:inline-flex;
-      gap:8px;
-      align-items:center;
-      padding:10px 12px;
-      border-radius:999px;
       background: rgba(255,255,255,.75);
-      border:1px solid rgba(255,77,135,.25);
-      box-shadow: 0 10px 24px rgba(0,0,0,.08);
-      color:var(--muted);
-      font-size:13px;
+      border: 1px solid rgba(225,29,72,.18);
+      border-radius: 999px;
+      padding: 8px 12px;
+      box-shadow: 0 10px 18px rgba(0,0,0,.06);
+      color: var(--muted);
+      font-size: 13px;
     }
-    .pill b{color:var(--ink)}
+    .pill strong{ color:var(--ink); }
+
     .grid{
       display:grid;
-      grid-template-columns: repeat(5, minmax(180px, 1fr));
+      grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 14px;
+      margin-top: 20px;
     }
-    @media (max-width: 1040px){ .grid{grid-template-columns: repeat(4, minmax(180px, 1fr));} }
-    @media (max-width: 840px){ .grid{grid-template-columns: repeat(3, minmax(180px, 1fr));} }
-    @media (max-width: 620px){ .grid{grid-template-columns: repeat(2, minmax(160px, 1fr));} }
-    @media (max-width: 380px){ .grid{grid-template-columns: 1fr;} }
 
-    .card{
-      background: rgba(255,255,255,.82);
-      border:1px solid rgba(255,77,135,.22);
-      border-radius: var(--radius2);
-      padding: 14px 14px 12px;
-      box-shadow: var(--shadow);
+    @media (max-width: 980px){
+      .grid{ grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+    @media (max-width: 760px){
+      .grid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .title{ font-size: 36px; }
+    }
+    @media (max-width: 520px){
+      .grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    .box{
+      position:relative;
+      border:0;
+      padding:0;
+      background: transparent;
       cursor:pointer;
-      position:relative;
-      overflow:hidden;
-      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
-      min-height: 148px;
+      border-radius: var(--radius);
+      transform: translateZ(0);
+      transition: transform .16s ease, filter .16s ease;
+      outline: none;
     }
-    .card:hover{ transform: translateY(-2px); box-shadow: 0 16px 36px rgba(0,0,0,.14); border-color: rgba(255,77,135,.35); }
-    .card:focus{ outline:none; box-shadow: var(--shadow), var(--ring); }
-    .card:before{
-      content:"";
+    .box:hover{
+      transform: translateY(-3px) rotate(-.2deg);
+      filter: drop-shadow(0 10px 16px rgba(225,29,72,.18));
+    }
+    .box:active{
+      transform: translateY(-1px) scale(.99);
+    }
+
+    .mailImg{
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: contain;
+      display:block;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow2);
+      background: rgba(255,255,255,.55);
+      border: 1px solid rgba(225,29,72,.16);
+      padding: 10px;
+    }
+
+    /* name label positioned over the blank “name area” */
+    .nameTag{
       position:absolute;
-      inset:-60px -60px auto auto;
-      width:140px;height:140px;
-      background: radial-gradient(circle at 30% 30%, rgba(255,77,135,.25), transparent 65%);
-      transform: rotate(18deg);
-    }
-    .name{
-      margin-top:10px;
-      font-weight:800;
-      letter-spacing:.2px;
-      font-size:16px;
-    }
-    .slug{
-      font-size:12px;
-      color:var(--muted);
-      margin-top:2px;
-    }
-    .mini{
-      margin-top:10px;
+      left: 14%;
+      right: 14%;
+      bottom: 26%;
+      height: 18%;
       display:flex;
-      justify-content:space-between;
       align-items:center;
-      gap:10px;
-      color:var(--muted);
-      font-size:12px;
-    }
-    .count{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(255,77,135,.10);
-      border:1px solid rgba(255,77,135,.18);
-      color:#7a1b3a;
-      font-weight:700;
-      white-space:nowrap;
-    }
-    .heartDot{
-      width:10px;height:10px; border-radius:50%;
-      background: linear-gradient(180deg,var(--pink),var(--red));
-      box-shadow: 0 0 0 4px rgba(255,77,135,.18);
+      justify-content:center;
+      text-align:center;
+
+      font-family: "Nunito", sans-serif;
+      font-weight: 800;
+      letter-spacing: .3px;
+      font-size: 16px;
+      color: #a10f2f;
+
+      /* soft sticker effect so it’s readable on any image */
+      background: rgba(255,255,255,.62);
+      border: 1px dashed rgba(225,29,72,.35);
+      border-radius: 12px;
+      padding: 6px 8px;
+      box-shadow: 0 10px 18px rgba(0,0,0,.06);
+      backdrop-filter: blur(3px);
     }
 
-    /* Valentine mailbox icon */
-    .mailbox{
-      width:74px;height:64px;
-      position:relative;
-      flex:0 0 auto;
-      border:none;
-      background:transparent;
-      margin-top:2px;
-    }
-    .mailbox .box{
+    /* subtle sparkle */
+    .sparkle{
       position:absolute;
-      left:6px; right:10px; bottom:6px; top:18px;
-      border-radius:16px;
-      background: linear-gradient(180deg, #ff6fa8, #ff3b7a);
-      border:2px solid rgba(255,255,255,.35);
-      box-shadow: 0 10px 22px rgba(0,0,0,.18);
+      inset:0;
+      border-radius: var(--radius);
+      pointer-events:none;
+      background: radial-gradient(500px 260px at 20% 10%, rgba(255,79,147,.16), transparent 50%);
+      opacity:.0;
+      transition: opacity .18s ease;
     }
-    .mailbox .lid{
-      position:absolute;
-      left:10px; right:14px; top:12px;
-      height:20px;
-      border-radius:16px 16px 12px 12px;
-      background: linear-gradient(180deg, #ff8fbd, #ff5a96);
-      border:2px solid rgba(255,255,255,.35);
-      box-shadow: 0 6px 14px rgba(0,0,0,.14);
-    }
-    .mailbox .slot{
-      position:absolute;
-      left:20px; right:24px; top:22px;
-      height:8px;
-      border-radius:8px;
-      background: rgba(0,0,0,.20);
-      border:1px solid rgba(255,255,255,.25);
-    }
-    .mailbox .post{
-      position:absolute;
-      left:12px;
-      bottom:0;
-      width:10px;height:16px;
-      border-radius:10px;
-      background: linear-gradient(180deg,#ffd1e4,#ff9fc7);
-      border:1px solid rgba(255,255,255,.35);
-    }
-    .mailbox .flag{
-      position:absolute;
-      right:0;
-      top:18px;
-      width:10px;height:30px;
-      border-radius:10px;
-      background: linear-gradient(180deg,#ff2d55,#d81b60);
-      box-shadow: 0 8px 16px rgba(0,0,0,.16);
-    }
-    .mailbox .flag:after{
-      content:"";
-      position:absolute;
-      left:-10px; top:10px;
-      width:18px;height:12px;
-      border-radius:10px 10px 10px 4px;
-      background: linear-gradient(180deg,#ff4d6d,#ff2d55);
-      border:1px solid rgba(255,255,255,.25);
-    }
-    .mailbox .heart{
-      position:absolute;
-      left:50%;
-      top:36px;
-      width:16px;height:16px;
-      transform: translateX(-50%) rotate(45deg);
-      background: #ffe1ee;
-      border-radius:4px;
-      box-shadow: 0 4px 10px rgba(0,0,0,.12);
-    }
-    .mailbox .heart:before,
-    .mailbox .heart:after{
-      content:"";
-      position:absolute;
-      width:16px;height:16px;
-      background:#ffe1ee;
-      border-radius:50%;
-    }
-    .mailbox .heart:before{ left:-8px; top:0; }
-    .mailbox .heart:after{ left:0; top:-8px; }
+    .box:hover .sparkle{ opacity:1; }
 
-    /* Modal */
-    .overlay{
-      position:fixed; inset:0;
-      background: rgba(18,7,12,.55);
-      backdrop-filter: blur(4px);
+    /* modal */
+    .modalBack{
+      position:fixed;
+      inset:0;
+      background: rgba(0,0,0,.35);
       display:none;
       align-items:center;
       justify-content:center;
-      padding: 18px;
+      padding: 16px;
       z-index: 50;
     }
-    .overlay.show{ display:flex; }
-
     .modal{
-      width:min(980px, 100%);
-      max-height: 88vh;
-      overflow:hidden;
-      border-radius: 22px;
+      width: min(860px, 100%);
       background: rgba(255,255,255,.92);
-      border:1px solid rgba(255,77,135,.25);
-      box-shadow: 0 24px 70px rgba(0,0,0,.25);
-      display:flex;
-      flex-direction:column;
+      border: 1px solid rgba(225,29,72,.20);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      backdrop-filter: blur(8px);
     }
-    .modalHeader{
-      padding: 14px 16px;
+    .modalTop{
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:12px;
-      border-bottom:1px solid rgba(255,77,135,.22);
-      background: linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,.75));
+      gap:10px;
+      padding: 14px 16px;
+      background: linear-gradient(90deg, rgba(255,79,147,.12), rgba(225,29,72,.10));
+      border-bottom: 1px solid rgba(225,29,72,.16);
     }
-    .mhLeft{
-      display:flex; align-items:center; gap:12px;
-      min-width:0;
-    }
-    .mhTitle{
-      display:flex;
-      flex-direction:column;
-      gap:2px;
-      min-width:0;
-    }
-    .mhTitle .to{
-      font-weight:900;
-      font-size:16px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-    .mhTitle .hint{
-      font-size:12px;
-      color:var(--muted);
+    .modalTop h2{
+      margin:0;
+      font-size: 18px;
+      color: var(--red);
+      letter-spacing:.2px;
     }
     .closeBtn{
-      appearance:none;
-      border:none;
-      background: rgba(255,77,135,.12);
-      border:1px solid rgba(255,77,135,.20);
-      color:#7a1b3a;
-      font-weight:900;
+      border:0;
+      background: rgba(255,255,255,.7);
+      border: 1px solid rgba(225,29,72,.18);
       border-radius: 12px;
-      padding: 10px 12px;
+      padding: 8px 10px;
       cursor:pointer;
+      font-weight:800;
+      color: var(--muted);
     }
-    .closeBtn:hover{ background: rgba(255,77,135,.18); }
+    .closeBtn:hover{ background:white; }
 
     .modalBody{
       display:grid;
-      grid-template-columns: 1.15fr .85fr;
-      gap: 0;
-      min-height: 0;
-      flex:1;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 14px;
+      padding: 14px 16px 16px;
     }
-    @media (max-width: 920px){
+    @media (max-width: 820px){
       .modalBody{ grid-template-columns: 1fr; }
     }
 
-    .notesPane{
-      padding: 14px 16px;
+    .notes{
+      background: rgba(255,255,255,.75);
+      border: 1px solid rgba(225,29,72,.16);
+      border-radius: 16px;
+      padding: 12px;
+      max-height: 52vh;
       overflow:auto;
-      min-height: 0;
-      border-right:1px solid rgba(255,77,135,.18);
     }
-    @media (max-width: 920px){
-      .notesPane{ border-right:none; border-bottom:1px solid rgba(255,77,135,.18); }
+    .note{
+      background: #fff;
+      border: 1px solid rgba(225,29,72,.14);
+      border-radius: 14px;
+      padding: 10px 10px 8px;
+      margin: 10px 0;
+      box-shadow: 0 10px 18px rgba(0,0,0,.05);
+    }
+    .noteMeta{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .noteMsg{
+      white-space: pre-wrap;
+      line-height: 1.45;
+      font-size: 14px;
+      color: var(--ink);
     }
 
     .composer{
-      padding: 14px 16px;
-      overflow:auto;
-      min-height:0;
-      background: rgba(255,77,135,.04);
+      background: rgba(255,255,255,.75);
+      border: 1px solid rgba(225,29,72,.16);
+      border-radius: 16px;
+      padding: 12px;
     }
-    .noteCard{
-      background:#fff;
-      border:1px solid rgba(255,77,135,.20);
-      border-radius: 18px;
-      padding: 12px 12px;
-      box-shadow: 0 10px 20px rgba(0,0,0,.06);
-      margin-bottom: 10px;
-      position:relative;
-      overflow:hidden;
-    }
-    .noteCard:before{
-      content:"";
-      position:absolute;
-      inset:-60px auto auto -60px;
-      width:160px;height:160px;
-      background: radial-gradient(circle at 60% 40%, rgba(255,77,135,.16), transparent 65%);
-      transform: rotate(-10deg);
-    }
-    .noteMsg{
-      position:relative;
-      z-index:1;
-      margin:0;
-      white-space:pre-wrap;
-      line-height:1.45;
-      color:#2a0f1b;
-      font-size:14px;
-    }
-    .noteMeta{
-      position:relative;
-      z-index:1;
-      margin-top:10px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      color:var(--muted);
-      font-size:12px;
-    }
-    .from{
-      font-weight:800;
-      color:#7a1b3a;
-    }
-
-    .empty{
-      border: 1px dashed rgba(255,77,135,.35);
-      background: rgba(255,255,255,.65);
-      border-radius: 18px;
-      padding: 14px;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.45;
-    }
-
     label{
-      display:block;
-      font-size:12px;
-      color:var(--muted);
-      margin: 10px 0 6px;
+      font-size: 12px;
+      color: var(--muted);
       font-weight:800;
       letter-spacing:.2px;
     }
     input, textarea{
       width:100%;
-      border-radius: 14px;
-      border:1px solid rgba(255,77,135,.25);
-      background: rgba(255,255,255,.9);
-      padding: 12px 12px;
+      margin-top:6px;
+      border-radius: 12px;
+      border: 1px solid rgba(225,29,72,.20);
+      padding: 10px 12px;
       font: inherit;
-      color: var(--ink);
+      background: rgba(255,255,255,.92);
       outline:none;
     }
-    textarea{ min-height: 170px; resize: vertical; line-height:1.4; }
-    input:focus, textarea:focus{ box-shadow: var(--ring); border-color: rgba(255,77,135,.45); }
-
-    .help{
-      margin-top:8px;
-      font-size:12px;
-      color:var(--muted);
-      line-height:1.35;
+    textarea{
+      min-height: 140px;
+      resize: vertical;
     }
-
-    .actions{
+    .tip{
+      margin: 8px 0 10px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .row{
       display:flex;
       gap:10px;
       align-items:center;
-      margin-top: 12px;
+      margin-top:10px;
       flex-wrap:wrap;
     }
-    .btn{
-      appearance:none;
-      border:none;
-      cursor:pointer;
-      border-radius: 14px;
-      padding: 12px 14px;
+    .sendBtn{
+      border:0;
+      border-radius: 999px;
+      padding: 10px 14px;
       font-weight: 900;
-      letter-spacing:.2px;
+      cursor:pointer;
+      color: white;
+      background: linear-gradient(90deg, var(--pink), var(--hot));
+      box-shadow: 0 14px 24px rgba(225,29,72,.18);
     }
-    .btnPrimary{
-      background: linear-gradient(180deg, var(--pink), var(--red));
-      color:white;
-      box-shadow: 0 14px 26px rgba(225,29,72,.22);
-      border:1px solid rgba(255,255,255,.28);
+    .sendBtn:hover{ filter: brightness(1.02); }
+    .sendBtn:disabled{
+      opacity:.55;
+      cursor:not-allowed;
+      filter:none;
     }
-    .btnPrimary:hover{ filter: brightness(1.02); transform: translateY(-1px); }
-    .btnGhost{
-      background: rgba(255,77,135,.10);
-      color:#7a1b3a;
-      border:1px solid rgba(255,77,135,.22);
-    }
-    .btnGhost:hover{ background: rgba(255,77,135,.14); }
-
     .status{
-      margin-top:10px;
-      font-size:12px;
-      color:var(--muted);
-      min-height: 18px;
-    }
-    .status.ok{ color: #0f7a3d; font-weight:800; }
-    .status.err{ color: #b42318; font-weight:800; }
-
-    footer{
-      text-align:center;
-      padding: 18px 16px 28px;
-      color: var(--muted);
       font-size: 12px;
+      color: var(--muted);
+      font-weight:800;
     }
-    .tiny{
-      opacity:.9;
-      line-height:1.35;
+    .empty{
+      margin: 10px 0;
+      padding: 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.85);
+      border: 1px dashed rgba(225,29,72,.28);
+      color: var(--muted);
+      font-size: 13px;
+      text-align:center;
     }
   </style>
 </head>
+
 <body>
-  <header>
-    <div class="badge"><span class="dot"></span><span><b>4EK</b> Valentines Mailboxes</span></div>
-    <h1>Send a Kind Note 💌</h1>
-    <p class="sub">
-      Click a mailbox to read notes for that person, or leave them a Valentine gram.
-      <strong>Keep it kind</strong> (inside jokes are okay as long as they’re still nice).
-      <br>
-      Tip: You can leave the <strong>From</strong> section blank if you want to be anonymous.
-    </p>
-  </header>
+  <div class="hearts" aria-hidden="true"></div>
 
   <div class="wrap">
-    <div class="topbar">
-      <div class="search" role="search">
-        <span aria-hidden="true">🔎</span>
-        <input id="q" type="text" placeholder="Search name…" autocomplete="off">
+    <header>
+      <h1 class="title">4EK Valentine Mailboxes 💌</h1>
+      <p class="subtitle">
+        Click a mailbox to read sweet notes inside — then leave a kind message for that person.
+        Keep it friendly, uplifting, and 4EK-approved vibes ✨
+      </p>
+      <div class="pillbar">
+        <div class="pill">✅ No logins • No approvals</div>
+        <div class="pill">🕵️ Want to be anonymous? <strong>Leave “From” blank</strong></div>
+        <div class="pill">💛 Kind messages only</div>
       </div>
-      <div class="pill" title="Backend status">
-        <span aria-hidden="true">⚡</span>
-        <span>Backend: <b id="apiStatus">checking…</b></span>
-      </div>
-      <div class="pill">
-        <span aria-hidden="true">💗</span>
-        <span><b id="totalPeople">25</b> mailboxes</span>
-      </div>
-    </div>
+    </header>
 
-    <div class="grid" id="grid" aria-label="Mailbox grid"></div>
+    <main class="grid" id="grid"></main>
   </div>
 
   <!-- Modal -->
-  <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-label="Mailbox modal">
-    <div class="modal" role="document">
-      <div class="modalHeader">
-        <div class="mhLeft">
-          <div class="mailbox" aria-hidden="true" style="transform:scale(.92);">
-            <div class="lid"></div><div class="slot"></div><div class="box"></div><div class="post"></div><div class="flag"></div><div class="heart"></div>
-          </div>
-          <div class="mhTitle">
-            <div class="to" id="modalTo">Mailbox</div>
-            <div class="hint" id="modalHint">Loading…</div>
-          </div>
-        </div>
+  <div class="modalBack" id="modalBack" role="dialog" aria-modal="true" aria-label="Mailbox">
+    <div class="modal">
+      <div class="modalTop">
+        <h2 id="modalTitle">Mailbox</h2>
         <button class="closeBtn" id="closeBtn" type="button">Close ✕</button>
       </div>
 
       <div class="modalBody">
-        <div class="notesPane">
-          <div id="notes"></div>
-        </div>
+        <section>
+          <div class="notes" id="notes">
+            <!-- notes injected -->
+          </div>
+        </section>
 
-        <div class="composer">
-          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
-            <div style="font-weight:900;">Leave a note</div>
-            <div class="count" title="Messages in this mailbox"><span class="heartDot"></span><span id="mailCount">0</span></div>
+        <aside class="composer">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+            <div style="font-weight:900; color:var(--red);">Leave a note 💌</div>
           </div>
 
-          <label for="fromInput">From (optional — leave blank to be anonymous)</label>
-          <input id="fromInput" type="text" maxlength="60" placeholder="Your name (optional)">
+          <div style="margin-top:10px;">
+            <label for="fromInput">From (optional)</label>
+            <input id="fromInput" maxlength="80" placeholder="Your name (or leave blank to be anonymous)" />
+            <div class="tip">Tip: leave “From” blank if you want to be anonymous.</div>
 
-          <label for="msgInput">Your message</label>
-          <textarea id="msgInput" maxlength="1200" placeholder="Write something kind…"></textarea>
+            <label for="msgInput">Message</label>
+            <textarea id="msgInput" maxlength="1200" placeholder="Write something kind… (inside jokes are fine as long as they’re still nice)"></textarea>
 
-          <div class="help">No login needed. Please keep it respectful and supportive.</div>
-
-          <div class="actions">
-            <button class="btn btnPrimary" id="sendBtn" type="button">Send 💌</button>
-            <button class="btn btnGhost" id="clearBtn" type="button">Clear</button>
+            <div class="row">
+              <button class="sendBtn" id="sendBtn" type="button">Send 💘</button>
+              <div class="status" id="status"></div>
+            </div>
           </div>
-
-          <div class="status" id="status"></div>
-        </div>
+        </aside>
       </div>
     </div>
   </div>
 
-  <footer>
-    <div class="tiny">4Ever Knights • University of Central Florida</div>
-  </footer>
-
   <script>
-    // ===== CONFIG =====
+    /* ====== CONFIG ====== */
+    // Your Apps Script Web App URL (you provided this)
     const API_BASE = "https://script.google.com/macros/s/AKfycbx1cKc_5vESx9v3764CEJLu8A3Wn2Nwe8pWBGz0mrnT91kLJOmuW9SzZy3LY8PnI66UnA/exec";
 
-    // EXACT 25 mailboxes (First name only)
+    // Put your mailbox image in the repo next to index.html as mailbox.jpg
+    const MAILBOX_IMG = "./mailbox.jpg";
+
+    // People (first name only). Keys are lowercase first names.
     const PEOPLE = [
-      "Anna Poulton",
-      "Abigail Johnson",
-      "Adrian Gavrilovie",
-      "Alayna Feilmeier",
-      "Anjali Murali",
-      "Armaan Gandhi",
-      "Axani Turin",
-      "Brooke Carter",
-      "Chloe Lowman",
-      "Colin Mackle",
-      "Ella Shockley",
-      "Gabe Irizarry",
-      "Hannah Ashton",
-      "Jaya Persaud",
-      "Julia Saldarriaga",
-      "Makenzie Ganey",
-      "Mitchell Cooper",
-      "Neha Jaisankar",
-      "Olivia Santos",
-      "Sam Billones",
-      "Sarah Mouton",
-      "Sruthi Moorthy",
-      "Stella Lagos",
-      "Subrina Seerattan",
-      "Tylia Brown"
-    ];
+      "Anna", "Abigail", "Adrian", "Alayna", "Anjali",
+      "Armaan", "Axani", "Brooke", "Chloe", "Colin",
+      "Ella", "Gabe", "Hannah", "Jaya", "Julia",
+      "Makenzie", "Mitchell", "Neha", "Olivia", "Sam",
+      "Sarah", "Sruthi", "Stella", "Subrina", "Tylia"
+    ].map(n => ({ name:n, key:n.toLowerCase() }));
 
-    // ===== UTILS =====
-    const $ = (id)=>document.getElementById(id);
-    const esc = (s)=>String(s??"").replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));
-    const slugify = (fullName)=>{
-      const first = String(fullName||"").trim().split(/\s+/)[0] || "";
-      return first.toLowerCase().replace(/[^a-z0-9]/g,"");
-    };
-    const firstName = (fullName)=>String(fullName||"").trim().split(/\s+/)[0] || fullName;
+    /* ====== UI refs ====== */
+    const grid = document.getElementById("grid");
+    const modalBack = document.getElementById("modalBack");
+    const closeBtn = document.getElementById("closeBtn");
+    const modalTitle = document.getElementById("modalTitle");
+    const notesEl = document.getElementById("notes");
+    const fromInput = document.getElementById("fromInput");
+    const msgInput = document.getElementById("msgInput");
+    const sendBtn = document.getElementById("sendBtn");
+    const statusEl = document.getElementById("status");
 
-    function fmtTime(ts){
-      if(!ts) return "";
-      try{
-        const d = new Date(Number(ts));
-        return d.toLocaleString(undefined, {month:"short", day:"numeric", hour:"numeric", minute:"2-digit"});
-      }catch{ return ""; }
+    let currentPerson = null;
+
+    /* ====== Helpers ====== */
+    function escapeHtml(s){
+      return String(s ?? "").replace(/[&<>"']/g, m => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"
+      }[m]));
     }
 
-    async function apiGetList(toSlug){
-      const url = API_BASE + "?action=list&to=" + encodeURIComponent(toSlug);
-      const res = await fetch(url, { method:"GET" });
-      if(!res.ok) throw new Error("HTTP " + res.status);
-      const data = await res.json();
-      if(!data || data.ok !== true) throw new Error(data && data.error ? data.error : "Bad response");
-      return data.notes || [];
+    function fmtTime(ms){
+      if(!ms) return "";
+      const d = new Date(Number(ms));
+      if(Number.isNaN(d.getTime())) return "";
+      const mm = String(d.getMonth()+1).padStart(2,"0");
+      const dd = String(d.getDate()).padStart(2,"0");
+      const yyyy = d.getFullYear();
+      let hr = d.getHours();
+      const ap = hr >= 12 ? "PM" : "AM";
+      hr = hr % 12; if(hr===0) hr = 12;
+      const min = String(d.getMinutes()).padStart(2,"0");
+      return `${mm}/${dd}/${yyyy} ${hr}:${min} ${ap}`;
     }
 
-    async function apiPostNote(toSlug, message, from){
-      const res = await fetch(API_BASE, {
-        method:"POST",
-        headers: { "Content-Type":"application/json" },
-        body: JSON.stringify({ to: toSlug, message, from })
-      });
-      if(!res.ok) throw new Error("HTTP " + res.status);
-      const data = await res.json();
-      if(!data || data.ok !== true) throw new Error(data && data.error ? data.error : "Bad response");
-      return true;
-    }
-
-    // ===== UI RENDER =====
-    const grid = $("grid");
-    const q = $("q");
-    const overlay = $("overlay");
-    const closeBtn = $("closeBtn");
-    const modalTo = $("modalTo");
-    const modalHint = $("modalHint");
-    const notesEl = $("notes");
-    const mailCount = $("mailCount");
-    const fromInput = $("fromInput");
-    const msgInput = $("msgInput");
-    const sendBtn = $("sendBtn");
-    const clearBtn = $("clearBtn");
-    const statusEl = $("status");
-    const apiStatus = $("apiStatus");
-    const totalPeople = $("totalPeople");
-
-    totalPeople.textContent = String(PEOPLE.length);
-
-    const state = {
-      open: false,
-      activeName: "",
-      activeSlug: "",
-      counts: new Map(), // slug -> count
-      cachedNotes: new Map() // slug -> notes array
-    };
-
-    function mailboxCard(name){
-      const slug = slugify(name);
-      const shown = firstName(name);
-      const count = state.counts.get(slug);
-      const countLabel = (typeof count === "number") ? count : "—";
-
-      return `
-        <button class="card" type="button" data-name="${esc(name)}" data-slug="${esc(slug)}" aria-label="Open mailbox for ${esc(shown)}">
-          <div class="mailbox" aria-hidden="true">
-            <div class="lid"></div>
-            <div class="slot"></div>
-            <div class="box"></div>
-            <div class="post"></div>
-            <div class="flag"></div>
-            <div class="heart"></div>
-          </div>
-          <div class="name">${esc(shown)}</div>
-          <div class="slug">@${esc(slug)}</div>
-          <div class="mini">
-            <span class="count"><span class="heartDot"></span><span>${esc(countLabel)}</span></span>
-            <span aria-hidden="true">Open ➜</span>
-          </div>
-        </button>
-      `;
-    }
-
-    function renderGrid(){
-      const term = (q.value || "").trim().toLowerCase();
-      const filtered = PEOPLE.filter(n=>{
-        if(!term) return true;
-        return n.toLowerCase().includes(term) || slugify(n).includes(term) || firstName(n).toLowerCase().includes(term);
-      });
-      grid.innerHTML = filtered.map(mailboxCard).join("");
-    }
-
-    function setStatus(msg, kind){
+    function setStatus(msg, isErr=false){
       statusEl.textContent = msg || "";
-      statusEl.className = "status" + (kind ? (" " + kind) : "");
+      statusEl.style.color = isErr ? "#b42318" : "";
     }
 
-    function openModal(name, slug){
-      state.open = true;
-      state.activeName = name;
-      state.activeSlug = slug;
-      modalTo.textContent = firstName(name) + "’s mailbox";
-      modalHint.textContent = "Loading notes…";
-      notesEl.innerHTML = "";
-      mailCount.textContent = "—";
-      setStatus("", "");
-      overlay.classList.add("show");
-      // load notes
-      loadMailbox(slug);
-      // focus
-      setTimeout(()=>msgInput.focus(), 50);
+    /* ====== Render grid ====== */
+    function renderGrid(){
+      grid.innerHTML = PEOPLE.map(p => `
+        <button class="box" type="button" data-key="${p.key}" aria-label="Open mailbox for ${escapeHtml(p.name)}">
+          <img class="mailImg" src="${MAILBOX_IMG}" alt="Valentine mailbox for ${escapeHtml(p.name)}" />
+          <div class="sparkle" aria-hidden="true"></div>
+          <div class="nameTag">${escapeHtml(p.name)}</div>
+        </button>
+      `).join("");
+
+      grid.querySelectorAll(".box").forEach(btn => {
+        btn.addEventListener("click", () => openMailbox(btn.dataset.key));
+      });
     }
 
+    /* ====== Modal open/close ====== */
+    function openModal(){
+      modalBack.style.display = "flex";
+      document.body.style.overflow = "hidden";
+    }
     function closeModal(){
-      state.open = false;
-      state.activeName = "";
-      state.activeSlug = "";
-      overlay.classList.remove("show");
-      setStatus("", "");
-    }
-
-    function renderNotes(notes){
-      mailCount.textContent = String(notes.length || 0);
-      modalHint.textContent = notes.length ? "Notes inside 💗" : "No notes yet — be the first!";
-      if(!notes.length){
-        notesEl.innerHTML = `
-          <div class="empty">
-            Nothing in here yet!<br>
-            Leave a kind note on the right 💌
-          </div>
-        `;
-        return;
-      }
-      notesEl.innerHTML = notes.map(n=>{
-        const from = (n.from && String(n.from).trim()) ? String(n.from).trim() : "Anonymous";
-        const when = fmtTime(n.ts);
-        return `
-          <div class="noteCard">
-            <p class="noteMsg">${esc(n.message || "")}</p>
-            <div class="noteMeta">
-              <span class="from">— ${esc(from)}</span>
-              <span>${esc(when)}</span>
-            </div>
-          </div>
-        `;
-      }).join("");
-    }
-
-    async function loadMailbox(slug){
-      try{
-        const notes = await apiGetList(slug);
-        state.cachedNotes.set(slug, notes);
-        state.counts.set(slug, notes.length);
-        renderNotes(notes);
-        // update grid counts without losing scroll
-        const activeTerm = q.value;
-        renderGrid();
-        q.value = activeTerm;
-      }catch(err){
-        modalHint.textContent = "Couldn’t load notes";
-        notesEl.innerHTML = `
-          <div class="empty">
-            <b>Load failed.</b><br>
-            This usually means the Apps Script Web App isn’t deployed with access set to <b>Anyone</b>,
-            or the endpoint isn’t returning JSON.<br><br>
-            Error: <code>${esc(err && err.message ? err.message : err)}</code>
-          </div>
-        `;
-        mailCount.textContent = "—";
-      }
-    }
-
-    // ===== EVENTS =====
-    grid.addEventListener("click", (e)=>{
-      const btn = e.target.closest(".card");
-      if(!btn) return;
-      openModal(btn.dataset.name, btn.dataset.slug);
-    });
-
-    q.addEventListener("input", renderGrid);
-
-    overlay.addEventListener("click", (e)=>{
-      if(e.target === overlay) closeModal();
-    });
-    closeBtn.addEventListener("click", closeModal);
-    document.addEventListener("keydown", (e)=>{
-      if(e.key === "Escape" && state.open) closeModal();
-    });
-
-    clearBtn.addEventListener("click", ()=>{
+      modalBack.style.display = "none";
+      document.body.style.overflow = "";
+      currentPerson = null;
+      notesEl.innerHTML = "";
       fromInput.value = "";
       msgInput.value = "";
-      setStatus("", "");
-      msgInput.focus();
-    });
+      setStatus("");
+    }
 
-    sendBtn.addEventListener("click", async ()=>{
-      const slug = state.activeSlug;
-      if(!slug){ return; }
+    closeBtn.addEventListener("click", closeModal);
+    modalBack.addEventListener("click", (e) => { if(e.target === modalBack) closeModal(); });
+    window.addEventListener("keydown", (e)=>{ if(e.key === "Escape" && modalBack.style.display === "flex") closeModal(); });
 
+    /* ====== API calls ====== */
+    async function loadNotes(personKey){
+      notesEl.innerHTML = `<div class="empty">Loading notes… 💞</div>`;
+      try{
+        const url = `${API_BASE}?action=list&to=${encodeURIComponent(personKey)}`;
+        const res = await fetch(url, { method:"GET" });
+        if(!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        if(!data || data.ok !== true) throw new Error(data?.error || "Unknown error");
+
+        const notes = Array.isArray(data.notes) ? data.notes : [];
+        if(notes.length === 0){
+          notesEl.innerHTML = `<div class="empty">No notes yet — be the first 💌</div>`;
+          return;
+        }
+
+        notesEl.innerHTML = notes.map(n => {
+          const from = (n.from || "").trim();
+          return `
+            <div class="note">
+              <div class="noteMeta">
+                <div>${from ? `From: <strong>${escapeHtml(from)}</strong>` : `From: <strong>Anonymous</strong>`}</div>
+                <div>${escapeHtml(fmtTime(n.ts))}</div>
+              </div>
+              <div class="noteMsg">${escapeHtml(n.message || "")}</div>
+            </div>
+          `;
+        }).join("");
+      }catch(err){
+        notesEl.innerHTML = `<div class="empty">Load failed 😭<br><span style="font-weight:800;">${escapeHtml(String(err))}</span></div>`;
+      }
+    }
+
+    async function postNote(personKey){
       const from = fromInput.value.trim();
       const message = msgInput.value.trim();
 
       if(message.length < 2){
-        setStatus("Please write a message first 💗", "err");
-        return;
-      }
-      if(message.length > 1200){
-        setStatus("Message is too long (max 1200 characters).", "err");
+        setStatus("Write a message first 💌", true);
         return;
       }
 
-      setStatus("Sending…", "");
       sendBtn.disabled = true;
+      setStatus("Sending…");
 
       try{
-        await apiPostNote(slug, message, from);
-        setStatus("Sent! 💌", "ok");
+        const res = await fetch(API_BASE, {
+          method: "POST",
+          headers: { "Content-Type":"application/json" },
+          body: JSON.stringify({ to: personKey, from, message })
+        });
+
+        // Apps Script sometimes returns 200 even on errors — we still parse JSON.
+        const data = await res.json().catch(()=> ({}));
+        if(!res.ok || data.ok !== true){
+          throw new Error(data?.error || `Send failed (HTTP ${res.status})`);
+        }
+
         msgInput.value = "";
-        fromInput.value = "";
-        // refresh mailbox
-        await loadMailbox(slug);
+        setStatus("Sent! 💘 Refreshing…");
+
+        await loadNotes(personKey);
+        setStatus("Sent! 💖");
       }catch(err){
-        setStatus("Couldn’t send: " + (err && err.message ? err.message : String(err)), "err");
+        setStatus(String(err), true);
       }finally{
         sendBtn.disabled = false;
       }
+    }
+
+    /* ====== Open mailbox ====== */
+    async function openMailbox(personKey){
+      const person = PEOPLE.find(p => p.key === personKey);
+      if(!person) return;
+
+      currentPerson = person;
+      modalTitle.textContent = `${person.name}’s Mailbox 💌`;
+      setStatus("");
+      openModal();
+      await loadNotes(person.key);
+    }
+
+    sendBtn.addEventListener("click", () => {
+      if(!currentPerson) return;
+      postNote(currentPerson.key);
     });
 
-    // ===== Backend check + initial render =====
-    async function backendCheck(){
-      try{
-        // test with any slug (first mailbox)
-        const testSlug = slugify(PEOPLE[0]);
-        await apiGetList(testSlug);
-        apiStatus.textContent = "connected";
-      }catch{
-        apiStatus.textContent = "not connected";
-      }
-    }
-
-    // Preload counts (best effort; runs sequentially to be gentle)
-    async function warmCounts(){
-      for(const n of PEOPLE){
-        const slug = slugify(n);
-        try{
-          const notes = await apiGetList(slug);
-          state.counts.set(slug, notes.length);
-        }catch{
-          // ignore
-        }
-      }
-      renderGrid();
-    }
-
+    /* init */
     renderGrid();
-    backendCheck();
-    // optional: warm counts after a short delay so the page appears instantly
-    setTimeout(warmCounts, 350);
   </script>
 </body>
 </html>
