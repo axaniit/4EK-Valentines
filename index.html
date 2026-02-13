@@ -1,0 +1,633 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>4EK Valentine Mailboxes</title>
+  <style>
+    :root{
+      --bg:#0B0B0C;
+      --panel:#111;
+      --panel2:#121212;
+      --header:#171717;
+      --text:#EDE8D6;
+      --muted:#B7B2A3;
+      --gold:#C8A64B;
+      --white:#ffffff;
+      --danger:#ff6b6b;
+      --ok:#7CFFB2;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      font-family: Georgia, "Times New Roman", Times, serif;
+    }
+    a{color:var(--gold); text-decoration:underline; text-decoration-color:var(--gold)}
+    .wrap{max-width:1100px; margin:0 auto; padding:24px 16px 48px}
+    .topbar{
+      border:2px solid var(--gold);
+      background:var(--panel);
+      border-radius:16px;
+      overflow:hidden;
+    }
+    .topbar .ornate{
+      padding:12px 16px;
+      border-bottom:1px solid var(--gold);
+      color:var(--gold);
+      text-align:center;
+      font-size:18px;
+    }
+    .topbar .head{
+      padding:22px 18px 16px;
+      text-align:center;
+    }
+    .title{
+      margin:0;
+      font-size:34px;
+      letter-spacing:1px;
+      line-height:1.15;
+    }
+    .subtitle{
+      margin-top:10px;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .ruleline{
+      height:1px;
+      background:var(--gold);
+      margin:14px auto 8px;
+      max-width:520px;
+    }
+    .flourish{
+      color:var(--gold);
+      font-size:16px;
+      margin-bottom:4px;
+    }
+    .intro{
+      margin:0 auto 18px;
+      max-width:780px;
+      color:var(--text);
+      font-size:16px;
+      line-height:1.65;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat( auto-fit, minmax(210px, 1fr) );
+      gap:14px;
+      margin-top:18px;
+    }
+    .card{
+      border:1px solid var(--gold);
+      background:var(--panel2);
+      border-radius:16px;
+      padding:14px;
+      cursor:pointer;
+      transition:transform .08s ease, box-shadow .08s ease;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+      min-height:140px;
+    }
+    .card:hover{transform:translateY(-1px)}
+    .card:focus{outline:2px solid var(--gold); outline-offset:2px}
+    .card .row{display:flex; gap:12px; align-items:center}
+    .mailbox{
+      width:54px; height:54px;
+      border:1px solid var(--gold);
+      border-radius:14px;
+      display:flex; align-items:center; justify-content:center;
+      background: #0f0f10;
+      flex:0 0 auto;
+      position:relative;
+    }
+    .mailbox:before{
+      content:"";
+      position:absolute;
+      width:28px; height:16px;
+      border:1px solid var(--gold);
+      border-radius:6px;
+      top:11px;
+    }
+    .mailbox:after{
+      content:"";
+      position:absolute;
+      width:28px; height:20px;
+      border:1px solid var(--gold);
+      border-radius:6px;
+      bottom:9px;
+      background:linear-gradient(180deg, rgba(200,166,75,.08), rgba(200,166,75,.02));
+    }
+    .name{
+      font-size:18px;
+      margin:0;
+      color:var(--white);
+      line-height:1.2;
+    }
+    .meta{
+      margin-top:6px;
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.4;
+    }
+    .pill{
+      display:inline-block;
+      font-size:11px;
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid var(--gold);
+      color:var(--gold);
+      margin-top:10px;
+    }
+
+    .layout{
+      display:grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap:14px;
+      margin-top:18px;
+      align-items:start;
+    }
+    @media (max-width: 860px){
+      .layout{grid-template-columns:1fr}
+    }
+
+    .panel{
+      border:1px solid var(--gold);
+      background:var(--panel2);
+      border-radius:16px;
+      overflow:hidden;
+    }
+    .panel .hd{
+      padding:14px 16px;
+      background:var(--header);
+      border-bottom:1px solid var(--gold);
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .panel .hd h2{
+      margin:0;
+      font-size:18px;
+      color:var(--gold);
+      letter-spacing:.4px;
+    }
+    .panel .bd{padding:16px}
+
+    .note{
+      border:1px solid rgba(200,166,75,.65);
+      border-radius:14px;
+      padding:12px 12px;
+      margin-bottom:10px;
+      background:#0f0f10;
+    }
+    .note .msg{
+      margin:0;
+      font-size:15px;
+      line-height:1.65;
+      color:var(--white);
+      white-space:pre-wrap;
+      word-break:break-word;
+    }
+    .note .from{
+      margin-top:10px;
+      font-size:12px;
+      color:var(--muted);
+    }
+    .empty{
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.6;
+      padding:10px 0;
+    }
+
+    textarea, input{
+      width:100%;
+      border-radius:12px;
+      border:1px solid rgba(200,166,75,.75);
+      background:#0f0f10;
+      color:var(--white);
+      padding:10px 12px;
+      font-family: "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
+      font-size:14px;
+      outline:none;
+    }
+    textarea{min-height:150px; resize:vertical; line-height:1.55}
+    label{display:block; font-size:12px; color:var(--muted); margin:10px 0 6px}
+    .actions{
+      display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;
+      align-items:center;
+    }
+    .btn{
+      display:inline-block;
+      border-radius:10px;
+      border:1px solid var(--gold);
+      background:var(--gold);
+      color:#111;
+      font-weight:700;
+      padding:10px 14px;
+      font-size:13px;
+      letter-spacing:.3px;
+      text-decoration:none;
+      cursor:pointer;
+      font-family: Georgia, "Times New Roman", Times, serif;
+    }
+    .btn.secondary{
+      background:transparent;
+      color:var(--gold);
+    }
+    .status{
+      font-size:12px;
+      color:var(--muted);
+    }
+    .status.err{color:var(--danger)}
+    .status.ok{color:var(--ok)}
+
+    .rules{
+      font-family:"Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
+      font-size:13px;
+      line-height:1.55;
+      color:var(--muted);
+    }
+    .rules strong{color:var(--text)}
+    .small{
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.5;
+      margin-top:10px;
+    }
+    .chiprow{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
+    .chip{
+      border:1px solid rgba(200,166,75,.65);
+      border-radius:999px;
+      padding:6px 10px;
+      font-size:12px;
+      color:var(--text);
+      background:#0f0f10;
+    }
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:12px;
+      border:1px solid rgba(200,166,75,.5);
+      border-radius:8px;
+      padding:2px 6px;
+      color:var(--gold);
+      background:#0f0f10;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="ornate">. ݁₊ ⊹ . ݁˖ . ݁. ݁₊ ⊹ . ݁˖ . ݁. ݁₊ ⊹ . ݁˖ . ݁. ݁₊ ⊹ . ݁˖ . ݁</div>
+      <div class="head">
+        <h1 class="title">4EK <span style="color:var(--gold)">Valentine Mailboxes</span></h1>
+        <div class="subtitle">2026 • University of Central Florida • 4EVER KNIGHTS</div>
+        <div class="ruleline"></div>
+        <div class="flourish">❦</div>
+        <p class="intro">
+          Click a mailbox to “open” it and read notes inside. Want to leave a note? Write one at the bottom and send it.
+          <br><br>
+          <span class="rules">
+            <strong>Rules:</strong> kind messages only • <strong>no romantic pressure</strong> • <strong>no profanity</strong> • inside jokes are fine if they’re not mean.
+          </span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Mailbox grid -->
+    <div id="mailboxGrid" class="grid" aria-label="Mailbox list"></div>
+
+    <div class="layout">
+      <!-- OPEN MAILBOX / NOTES -->
+      <div class="panel" aria-live="polite">
+        <div class="hd">
+          <h2 id="openTitle">Open a mailbox</h2>
+          <div class="status" id="loadStatus"></div>
+        </div>
+        <div class="bd" id="notesArea">
+          <div class="empty">Pick a mailbox above to see the notes inside.</div>
+        </div>
+      </div>
+
+      <!-- COMPOSER -->
+      <div class="panel">
+        <div class="hd">
+          <h2>Write a note</h2>
+          <div class="status" id="composeStatus"></div>
+        </div>
+        <div class="bd">
+          <div class="rules">
+            Your note will open as a <strong>GitHub Issue</strong> so you can “sign + send.”
+            Notes start as <span class="kbd">pending</span> and show up once approved (moderation).
+          </div>
+
+          <label for="toSelect">To</label>
+          <select id="toSelect" style="width:100%; border-radius:12px; border:1px solid rgba(200,166,75,.75); background:#0f0f10; color:#fff; padding:10px 12px; font-size:14px;">
+          </select>
+
+          <label for="message">Message</label>
+          <textarea id="message" placeholder="Write something kind… (inside jokes allowed)"></textarea>
+
+          <label for="signature">Signature (optional — leave blank to be anonymous)</label>
+          <input id="signature" type="text" placeholder="Your name (or blank)" />
+
+          <div class="chiprow">
+            <div class="chip">✅ Kind messages only</div>
+            <div class="chip">✅ No romantic pressure</div>
+            <div class="chip">✅ No profanity</div>
+          </div>
+
+          <div class="actions">
+            <button class="btn" id="sendBtn">Sign & Send</button>
+            <button class="btn secondary" id="clearBtn" type="button">Clear</button>
+          </div>
+
+          <div class="small">
+            Tip: If you want anonymity, leave signature blank. If you include an inside joke, make sure it still reads kind to anyone else.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="small" style="margin-top:14px; text-align:center;">
+      Powered by GitHub Issues • Visible notes are labeled <span class="kbd">approved</span>
+    </div>
+  </div>
+
+  <script>
+    /***********************
+     * CONFIG (EDIT THIS)
+     ***********************/
+    const GITHUB_OWNER = "YOUR_ORG_OR_USERNAME";
+    const GITHUB_REPO  = "YOUR_REPO_NAME";
+
+    // Labels used for moderation + routing
+    const LABEL_APPROVED = "approved";
+    const LABEL_PENDING  = "pending";
+    const MAILBOX_LABEL_PREFIX = "mailbox-"; // e.g., mailbox-stella
+
+    // Ambassadors (edit this list)
+    const AMBASSADORS = [
+      { name: "Stella", slug: "stella" },
+      { name: "Axani",  slug: "axani"  },
+      { name: "Armaan", slug: "armaan" },
+      // add more...
+    ];
+
+    /***********************
+     * BASIC SAFETY FILTER
+     * (client-side)
+     ***********************/
+    const PROFANITY = [
+      // keep this list short/obvious; add any you want blocked
+      "fuck","shit","bitch","asshole","dick","pussy","cunt","slut","whore","nigger","faggot"
+    ];
+
+    function containsProfanity(text){
+      const t = (text || "").toLowerCase();
+      return PROFANITY.some(w => new RegExp(`\\b${escapeRegExp(w)}\\b`, "i").test(t));
+    }
+    function escapeRegExp(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+
+    /***********************
+     * DOM
+     ***********************/
+    const elGrid   = document.getElementById("mailboxGrid");
+    const elTo     = document.getElementById("toSelect");
+    const elMsg    = document.getElementById("message");
+    const elSig    = document.getElementById("signature");
+    const elSend   = document.getElementById("sendBtn");
+    const elClear  = document.getElementById("clearBtn");
+
+    const elTitle  = document.getElementById("openTitle");
+    const elNotes  = document.getElementById("notesArea");
+    const elLoadSt = document.getElementById("loadStatus");
+    const elCompSt = document.getElementById("composeStatus");
+
+    let currentMailbox = null;
+
+    /***********************
+     * INIT UI
+     ***********************/
+    function init(){
+      // Populate select
+      elTo.innerHTML = AMBASSADORS.map(a => `<option value="${a.slug}">${a.name}</option>`).join("");
+
+      // Build mailbox grid
+      elGrid.innerHTML = AMBASSADORS.map(a => mailboxCardHTML(a)).join("");
+
+      // Click handlers
+      elGrid.querySelectorAll("[data-mailbox]").forEach(btn => {
+        btn.addEventListener("click", () => openMailbox(btn.getAttribute("data-mailbox")));
+        btn.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            openMailbox(btn.getAttribute("data-mailbox"));
+          }
+        });
+      });
+
+      // Send handlers
+      elSend.addEventListener("click", onSend);
+      elClear.addEventListener("click", () => {
+        elMsg.value = "";
+        elSig.value = "";
+        setComposeStatus("", "");
+      });
+    }
+
+    function mailboxCardHTML(a){
+      return `
+        <div class="card" role="button" tabindex="0" data-mailbox="${a.slug}" aria-label="Open mailbox for ${a.name}">
+          <div class="row">
+            <div class="mailbox" aria-hidden="true"></div>
+            <div>
+              <p class="name">${escapeHTML(a.name)}</p>
+              <div class="meta">Click to open</div>
+              <div class="pill">${MAILBOX_LABEL_PREFIX}${a.slug}</div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    /***********************
+     * OPEN MAILBOX (READ)
+     * Reads only issues that have BOTH:
+     * - approved
+     * - mailbox-<slug>
+     ***********************/
+    async function openMailbox(slug){
+      const amb = AMBASSADORS.find(a => a.slug === slug);
+      if(!amb) return;
+
+      currentMailbox = slug;
+      elTitle.textContent = `Mailbox: ${amb.name}`;
+      elNotes.innerHTML = `<div class="empty">Loading notes…</div>`;
+      setLoadStatus("Loading…", "");
+
+      try{
+        const issues = await fetchApprovedIssuesForMailbox(slug);
+        renderNotes(issues, amb.name);
+        setLoadStatus(`${issues.length} note(s)`, "ok");
+      }catch(err){
+        console.error(err);
+        elNotes.innerHTML = `<div class="empty">Couldn’t load notes right now. Try again in a minute.</div>`;
+        setLoadStatus("Load failed", "err");
+      }
+    }
+
+    async function fetchApprovedIssuesForMailbox(slug){
+      const labels = encodeURIComponent(`${LABEL_APPROVED},${MAILBOX_LABEL_PREFIX}${slug}`);
+      const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/issues?state=open&per_page=100&labels=${labels}`;
+      const res = await fetch(url, {
+        headers: { "Accept": "application/vnd.github+json" }
+      });
+      if(!res.ok) throw new Error(`GitHub API error: ${res.status}`);
+      const data = await res.json();
+      // filter out PRs (GitHub issues API includes pull requests)
+      return (data || []).filter(it => !it.pull_request);
+    }
+
+    function renderNotes(issues, mailboxName){
+      if(!issues || issues.length === 0){
+        elNotes.innerHTML = `<div class="empty">No notes yet for <strong>${escapeHTML(mailboxName)}</strong>. Be the first 💌</div>`;
+        return;
+      }
+
+      // Newest first
+      const sorted = [...issues].sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
+
+      elNotes.innerHTML = sorted.map(issue => {
+        const parsed = parseIssueBody(issue.body || "");
+        const msg = parsed.message || "(no message)";
+        const from = (parsed.from && parsed.from.trim()) ? parsed.from.trim() : "Anonymous";
+        return `
+          <div class="note">
+            <p class="msg">${escapeHTML(msg)}</p>
+            <div class="from">— ${escapeHTML(from)}</div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // Expected body format (we generate this in send):
+    // ### Message
+    // ...
+    // ### From
+    // ...
+    function parseIssueBody(body){
+      const out = { message:"", from:"" };
+      const msgMatch = body.match(/###\s*Message\s*([\s\S]*?)###\s*From\s*([\s\S]*)/i);
+      if(msgMatch){
+        out.message = (msgMatch[1] || "").trim();
+        out.from = (msgMatch[2] || "").trim();
+        return out;
+      }
+      // fallback: try to find From section separately
+      const fromMatch = body.match(/###\s*From\s*([\s\S]*)/i);
+      if(fromMatch){
+        out.from = (fromMatch[1] || "").trim();
+        out.message = body.replace(fromMatch[0], "").trim();
+      }else{
+        out.message = body.trim();
+      }
+      return out;
+    }
+
+    /***********************
+     * SEND NOTE (WRITE)
+     * Opens GitHub "new issue" page with prefilled fields
+     * - label: pending + mailbox-<slug>
+     * - title: 💌 Valentine for <Name>
+     ***********************/
+    function onSend(){
+      const slug = elTo.value;
+      const amb  = AMBASSADORS.find(a => a.slug === slug);
+
+      const message = (elMsg.value || "").trim();
+      const signature = (elSig.value || "").trim();
+
+      // Validation
+      if(!amb){
+        setComposeStatus("Choose a recipient.", "err");
+        return;
+      }
+      if(message.length < 2){
+        setComposeStatus("Write a message before sending.", "err");
+        return;
+      }
+      // No profanity (in message or signature)
+      if(containsProfanity(message) || containsProfanity(signature)){
+        setComposeStatus("Please remove profanity and try again.", "err");
+        return;
+      }
+      // No romantic pressure (soft guardrail: show reminder, don't auto-block)
+      // You can hard-block specific phrases if you want; right now we enforce rules by reminder + moderation.
+      // Also prevent excessively long spam
+      if(message.length > 1200){
+        setComposeStatus("Keep it under 1200 characters.", "err");
+        return;
+      }
+
+      // Build GitHub issue URL
+      const labels = `${LABEL_PENDING},${MAILBOX_LABEL_PREFIX}${slug}`;
+      const title  = `💌 Valentine for ${amb.name}`;
+
+      const body =
+`### Message
+${message}
+
+### From
+${signature || ""}
+
+---
+Rules: kind messages only • no romantic pressure • no profanity • inside jokes allowed (keep it kind).`;
+
+      const issueUrl = makePrefilledIssueUrl({ labels, title, body });
+
+      setComposeStatus("Opening GitHub to send…", "ok");
+      window.open(issueUrl, "_blank", "noopener,noreferrer");
+    }
+
+    function makePrefilledIssueUrl({ labels, title, body }){
+      // This uses GitHub's built-in prefill query params for new issues.
+      // (Works best when Issues are enabled + repo is public or users have access.)
+      const base = `https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}/issues/new`;
+      const params = new URLSearchParams();
+      params.set("labels", labels);
+      params.set("title", title);
+      params.set("body", body);
+      return `${base}?${params.toString()}`;
+    }
+
+    /***********************
+     * STATUS HELPERS
+     ***********************/
+    function setLoadStatus(text, kind){
+      elLoadSt.textContent = text || "";
+      elLoadSt.className = "status" + (kind ? " " + kind : "");
+    }
+    function setComposeStatus(text, kind){
+      elCompSt.textContent = text || "";
+      elCompSt.className = "status" + (kind ? " " + kind : "");
+    }
+
+    /***********************
+     * ESCAPE
+     ***********************/
+    function escapeHTML(s){
+      return String(s ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#39;");
+    }
+
+    init();
+  </script>
+</body>
+</html>
