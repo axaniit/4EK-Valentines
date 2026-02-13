@@ -12,16 +12,19 @@
 
   <style>
     :root{
-      --bg1:#fff1f6;
-      --bg2:#ffe3ee;
-      --ink:#2a0f1a;
-      --muted:#6a2b43;
+      --bg:#0B0B0C;
+      --panel:#111;
+      --panel2:#141416;
+      --ink:#F6F2E7;
+      --muted:#C9C2B4;
+      --gold:#C8A64B;
+
       --pink:#ff4f93;
       --hot:#ff2f6d;
       --red:#e11d48;
-      --card:#ffffffcc;
-      --shadow: 0 18px 40px rgba(0,0,0,.10);
-      --shadow2: 0 10px 24px rgba(0,0,0,.10);
+
+      --shadow: 0 18px 40px rgba(0,0,0,.35);
+      --shadow2: 0 12px 26px rgba(0,0,0,.35);
       --radius: 18px;
     }
 
@@ -31,37 +34,37 @@
       font-family: "Nunito", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       color:var(--ink);
       background:
-        radial-gradient(1200px 600px at 10% 10%, var(--bg2), transparent 60%),
-        radial-gradient(900px 500px at 90% 20%, #ffe9f2, transparent 55%),
-        radial-gradient(900px 500px at 50% 90%, #ffe7f1, transparent 55%),
-        linear-gradient(180deg, var(--bg1), #ffffff);
+        radial-gradient(1100px 520px at 12% 8%, rgba(255,79,147,.14), transparent 55%),
+        radial-gradient(900px 520px at 88% 18%, rgba(225,29,72,.12), transparent 55%),
+        radial-gradient(900px 520px at 50% 92%, rgba(255,47,109,.10), transparent 55%),
+        linear-gradient(180deg, var(--bg), #070708);
       min-height:100vh;
     }
 
-    /* floating hearts background */
+    /* subtle hearts background */
     .hearts{
       position:fixed;
       inset:0;
       pointer-events:none;
-      opacity:.6;
+      opacity:.35;
       background-image:
-        radial-gradient(circle at 20% 30%, rgba(255,79,147,.18) 0 2px, transparent 3px),
-        radial-gradient(circle at 70% 25%, rgba(225,29,72,.14) 0 2px, transparent 3px),
-        radial-gradient(circle at 40% 70%, rgba(255,47,109,.12) 0 2px, transparent 3px),
-        radial-gradient(circle at 85% 75%, rgba(255,79,147,.12) 0 2px, transparent 3px);
-      background-size: 160px 160px, 220px 220px, 260px 260px, 240px 240px;
-      animation: drift 14s linear infinite;
+        radial-gradient(circle at 20% 30%, rgba(255,79,147,.22) 0 2px, transparent 3px),
+        radial-gradient(circle at 70% 25%, rgba(225,29,72,.18) 0 2px, transparent 3px),
+        radial-gradient(circle at 40% 70%, rgba(255,47,109,.16) 0 2px, transparent 3px),
+        radial-gradient(circle at 85% 75%, rgba(255,79,147,.16) 0 2px, transparent 3px);
+      background-size: 170px 170px, 230px 230px, 270px 270px, 250px 250px;
+      animation: drift 16s linear infinite;
       filter: blur(.2px);
     }
     @keyframes drift{
       from{ transform: translate3d(0,0,0); }
-      to{ transform: translate3d(-40px, 30px, 0); }
+      to{ transform: translate3d(-42px, 30px, 0); }
     }
 
     .wrap{
-      max-width:1100px;
+      max-width:1180px;
       margin: 0 auto;
-      padding: 28px 16px 60px;
+      padding: 28px 16px 64px;
       position:relative;
       z-index:1;
     }
@@ -76,17 +79,18 @@
     }
     .title{
       font-family:"Pacifico", cursive;
-      font-size: 42px;
+      font-size: 44px;
       line-height:1.05;
       margin:0;
-      color: var(--red);
-      text-shadow: 0 6px 18px rgba(225,29,72,.15);
+      color: #ffd6e6;
+      text-shadow: 0 10px 24px rgba(225,29,72,.18);
     }
     .subtitle{
       margin:0;
       color: var(--muted);
       font-size: 15px;
-      max-width: 780px;
+      max-width: 820px;
+      line-height:1.55;
     }
 
     .pillbar{
@@ -97,11 +101,11 @@
       margin-top:6px;
     }
     .pill{
-      background: rgba(255,255,255,.75);
-      border: 1px solid rgba(225,29,72,.18);
+      background: rgba(17,17,17,.8);
+      border: 1px solid rgba(200,166,75,.35);
       border-radius: 999px;
       padding: 8px 12px;
-      box-shadow: 0 10px 18px rgba(0,0,0,.06);
+      box-shadow: 0 10px 18px rgba(0,0,0,.22);
       color: var(--muted);
       font-size: 13px;
     }
@@ -110,21 +114,22 @@
     .grid{
       display:grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 14px;
-      margin-top: 20px;
+      gap: 16px;
+      margin-top: 22px;
     }
 
-    @media (max-width: 980px){
+    @media (max-width: 1020px){
       .grid{ grid-template-columns: repeat(4, minmax(0, 1fr)); }
     }
     @media (max-width: 760px){
       .grid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
-      .title{ font-size: 36px; }
+      .title{ font-size: 38px; }
     }
     @media (max-width: 520px){
       .grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
+    /* Mailbox button */
     .box{
       position:relative;
       border:0;
@@ -137,13 +142,14 @@
       outline: none;
     }
     .box:hover{
-      transform: translateY(-3px) rotate(-.2deg);
-      filter: drop-shadow(0 10px 16px rgba(225,29,72,.18));
+      transform: translateY(-4px) rotate(-.2deg);
+      filter: drop-shadow(0 10px 18px rgba(225,29,72,.18));
     }
     .box:active{
       transform: translateY(-1px) scale(.99);
     }
 
+    /* Bigger mailbox, less “box” */
     .mailImg{
       width: 100%;
       aspect-ratio: 1 / 1;
@@ -151,9 +157,22 @@
       display:block;
       border-radius: var(--radius);
       box-shadow: var(--shadow2);
-      background: rgba(255,255,255,.55);
-      border: 1px solid rgba(225,29,72,.16);
-      padding: 10px;
+      background: transparent;          /* remove big “square” look */
+      border: none;                     /* remove border square */
+      padding: 0;                       /* no padding so image fills */
+      transform: scale(1.07);           /* make icon visually bigger */
+      transform-origin: center;
+    }
+
+    /* optional soft glow halo behind image (doesn't look like a square) */
+    .halo{
+      position:absolute;
+      inset: 6px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 50% 55%, rgba(255,79,147,.20), transparent 60%);
+      filter: blur(1px);
+      opacity:.9;
+      pointer-events:none;
     }
 
     /* name label positioned over the blank “name area” */
@@ -169,27 +188,26 @@
       text-align:center;
 
       font-family: "Nunito", sans-serif;
-      font-weight: 800;
+      font-weight: 900;
       letter-spacing: .3px;
       font-size: 16px;
-      color: #a10f2f;
+      color: #7a0f27;
 
-      /* soft sticker effect so it’s readable on any image */
-      background: rgba(255,255,255,.62);
-      border: 1px dashed rgba(225,29,72,.35);
+      background: rgba(255,255,255,.65);
+      border: 1px dashed rgba(225,29,72,.42);
       border-radius: 12px;
       padding: 6px 8px;
-      box-shadow: 0 10px 18px rgba(0,0,0,.06);
+      box-shadow: 0 10px 18px rgba(0,0,0,.18);
       backdrop-filter: blur(3px);
     }
 
-    /* subtle sparkle */
+    /* subtle sparkle overlay */
     .sparkle{
       position:absolute;
       inset:0;
       border-radius: var(--radius);
       pointer-events:none;
-      background: radial-gradient(500px 260px at 20% 10%, rgba(255,79,147,.16), transparent 50%);
+      background: radial-gradient(520px 260px at 20% 10%, rgba(255,79,147,.14), transparent 52%);
       opacity:.0;
       transition: opacity .18s ease;
     }
@@ -199,7 +217,7 @@
     .modalBack{
       position:fixed;
       inset:0;
-      background: rgba(0,0,0,.35);
+      background: rgba(0,0,0,.55);
       display:none;
       align-items:center;
       justify-content:center;
@@ -207,13 +225,13 @@
       z-index: 50;
     }
     .modal{
-      width: min(860px, 100%);
-      background: rgba(255,255,255,.92);
-      border: 1px solid rgba(225,29,72,.20);
+      width: min(900px, 100%);
+      background: rgba(17,17,17,.92);
+      border: 1px solid rgba(200,166,75,.35);
       border-radius: 20px;
       box-shadow: var(--shadow);
       overflow:hidden;
-      backdrop-filter: blur(8px);
+      backdrop-filter: blur(10px);
     }
     .modalTop{
       display:flex;
@@ -222,25 +240,25 @@
       gap:10px;
       padding: 14px 16px;
       background: linear-gradient(90deg, rgba(255,79,147,.12), rgba(225,29,72,.10));
-      border-bottom: 1px solid rgba(225,29,72,.16);
+      border-bottom: 1px solid rgba(200,166,75,.25);
     }
     .modalTop h2{
       margin:0;
       font-size: 18px;
-      color: var(--red);
+      color: #ffe4ee;
       letter-spacing:.2px;
     }
     .closeBtn{
       border:0;
-      background: rgba(255,255,255,.7);
-      border: 1px solid rgba(225,29,72,.18);
+      background: rgba(0,0,0,.35);
+      border: 1px solid rgba(200,166,75,.35);
       border-radius: 12px;
       padding: 8px 10px;
       cursor:pointer;
-      font-weight:800;
+      font-weight:900;
       color: var(--muted);
     }
-    .closeBtn:hover{ background:white; }
+    .closeBtn:hover{ background: rgba(0,0,0,.55); color: var(--ink); }
 
     .modalBody{
       display:grid;
@@ -248,25 +266,25 @@
       gap: 14px;
       padding: 14px 16px 16px;
     }
-    @media (max-width: 820px){
+    @media (max-width: 860px){
       .modalBody{ grid-template-columns: 1fr; }
     }
 
     .notes{
-      background: rgba(255,255,255,.75);
-      border: 1px solid rgba(225,29,72,.16);
+      background: rgba(20,20,22,.85);
+      border: 1px solid rgba(200,166,75,.25);
       border-radius: 16px;
       padding: 12px;
-      max-height: 52vh;
+      max-height: 54vh;
       overflow:auto;
     }
     .note{
-      background: #fff;
-      border: 1px solid rgba(225,29,72,.14);
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,79,147,.18);
       border-radius: 14px;
       padding: 10px 10px 8px;
       margin: 10px 0;
-      box-shadow: 0 10px 18px rgba(0,0,0,.05);
+      box-shadow: 0 10px 18px rgba(0,0,0,.22);
     }
     .noteMeta{
       display:flex;
@@ -284,31 +302,34 @@
     }
 
     .composer{
-      background: rgba(255,255,255,.75);
-      border: 1px solid rgba(225,29,72,.16);
+      background: rgba(20,20,22,.85);
+      border: 1px solid rgba(200,166,75,.25);
       border-radius: 16px;
       padding: 12px;
     }
     label{
       font-size: 12px;
       color: var(--muted);
-      font-weight:800;
+      font-weight: 900;
       letter-spacing:.2px;
     }
     input, textarea{
       width:100%;
       margin-top:6px;
       border-radius: 12px;
-      border: 1px solid rgba(225,29,72,.20);
+      border: 1px solid rgba(200,166,75,.28);
       padding: 10px 12px;
       font: inherit;
-      background: rgba(255,255,255,.92);
+      background: rgba(0,0,0,.25);
+      color: var(--ink);
       outline:none;
     }
     textarea{
       min-height: 140px;
       resize: vertical;
     }
+    input::placeholder, textarea::placeholder{ color: rgba(201,194,180,.65); }
+
     .tip{
       margin: 8px 0 10px;
       font-size: 12px;
@@ -327,11 +348,11 @@
       padding: 10px 14px;
       font-weight: 900;
       cursor:pointer;
-      color: white;
-      background: linear-gradient(90deg, var(--pink), var(--hot));
-      box-shadow: 0 14px 24px rgba(225,29,72,.18);
+      color: #111;
+      background: linear-gradient(90deg, #ffd6e6, #ff9fc2);
+      box-shadow: 0 14px 24px rgba(225,29,72,.22);
     }
-    .sendBtn:hover{ filter: brightness(1.02); }
+    .sendBtn:hover{ filter: brightness(1.03); }
     .sendBtn:disabled{
       opacity:.55;
       cursor:not-allowed;
@@ -340,23 +361,32 @@
     .status{
       font-size: 12px;
       color: var(--muted);
-      font-weight:800;
+      font-weight:900;
     }
     .empty{
       margin: 10px 0;
       padding: 12px;
       border-radius: 14px;
-      background: rgba(255,255,255,.85);
-      border: 1px dashed rgba(225,29,72,.28);
+      background: rgba(255,255,255,.06);
+      border: 1px dashed rgba(200,166,75,.35);
       color: var(--muted);
       font-size: 13px;
       text-align:center;
+    }
+
+    /* ===== Heart confetti (canvas) ===== */
+    canvas#confetti{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index: 100;
     }
   </style>
 </head>
 
 <body>
   <div class="hearts" aria-hidden="true"></div>
+  <canvas id="confetti" aria-hidden="true"></canvas>
 
   <div class="wrap">
     <header>
@@ -385,14 +415,12 @@
 
       <div class="modalBody">
         <section>
-          <div class="notes" id="notes">
-            <!-- notes injected -->
-          </div>
+          <div class="notes" id="notes"></div>
         </section>
 
         <aside class="composer">
           <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
-            <div style="font-weight:900; color:var(--red);">Leave a note 💌</div>
+            <div style="font-weight:900; color:#ffe4ee;">Leave a note 💌</div>
           </div>
 
           <div style="margin-top:10px;">
@@ -415,7 +443,7 @@
 
   <script>
     /* ====== CONFIG ====== */
-    // Your Apps Script Web App URL (you provided this)
+    // Your Apps Script Web App URL
     const API_BASE = "https://script.google.com/macros/s/AKfycbx1cKc_5vESx9v3764CEJLu8A3Wn2Nwe8pWBGz0mrnT91kLJOmuW9SzZy3LY8PnI66UnA/exec";
 
     // Put your mailbox image in the repo next to index.html as mailbox.jpg
@@ -446,7 +474,7 @@
     /* ====== Helpers ====== */
     function escapeHtml(s){
       return String(s ?? "").replace(/[&<>"']/g, m => ({
-        "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
       }[m]));
     }
 
@@ -466,13 +494,14 @@
 
     function setStatus(msg, isErr=false){
       statusEl.textContent = msg || "";
-      statusEl.style.color = isErr ? "#b42318" : "";
+      statusEl.style.color = isErr ? "#ffb4c6" : "";
     }
 
     /* ====== Render grid ====== */
     function renderGrid(){
       grid.innerHTML = PEOPLE.map(p => `
         <button class="box" type="button" data-key="${p.key}" aria-label="Open mailbox for ${escapeHtml(p.name)}">
+          <div class="halo" aria-hidden="true"></div>
           <img class="mailImg" src="${MAILBOX_IMG}" alt="Valentine mailbox for ${escapeHtml(p.name)}" />
           <div class="sparkle" aria-hidden="true"></div>
           <div class="nameTag">${escapeHtml(p.name)}</div>
@@ -532,7 +561,7 @@
           `;
         }).join("");
       }catch(err){
-        notesEl.innerHTML = `<div class="empty">Load failed 😭<br><span style="font-weight:800;">${escapeHtml(String(err))}</span></div>`;
+        notesEl.innerHTML = `<div class="empty">Load failed 😭<br><span style="font-weight:900;">${escapeHtml(String(err))}</span></div>`;
       }
     }
 
@@ -555,17 +584,19 @@
           body: JSON.stringify({ to: personKey, from, message })
         });
 
-        // Apps Script sometimes returns 200 even on errors — we still parse JSON.
         const data = await res.json().catch(()=> ({}));
         if(!res.ok || data.ok !== true){
           throw new Error(data?.error || `Send failed (HTTP ${res.status})`);
         }
 
         msgInput.value = "";
-        setStatus("Sent! 💘 Refreshing…");
 
+        // heart confetti on success
+        burstHearts();
+
+        setStatus("Sent! 💖 Refreshing…");
         await loadNotes(personKey);
-        setStatus("Sent! 💖");
+        setStatus("Sent! 💘");
       }catch(err){
         setStatus(String(err), true);
       }finally{
@@ -589,6 +620,101 @@
       if(!currentPerson) return;
       postNote(currentPerson.key);
     });
+
+    /* ===== Heart confetti (simple canvas hearts) ===== */
+    const confettiCanvas = document.getElementById("confetti");
+    const ctx = confettiCanvas.getContext("2d");
+    let W = 0, H = 0;
+
+    function resizeConfetti(){
+      W = confettiCanvas.width = window.innerWidth * devicePixelRatio;
+      H = confettiCanvas.height = window.innerHeight * devicePixelRatio;
+      confettiCanvas.style.width = window.innerWidth + "px";
+      confettiCanvas.style.height = window.innerHeight + "px";
+      ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+    }
+    window.addEventListener("resize", resizeConfetti);
+    resizeConfetti();
+
+    const hearts = [];
+    function rand(min,max){ return Math.random()*(max-min)+min; }
+
+    function drawHeart(x,y,size,rot,color){
+      ctx.save();
+      ctx.translate(x,y);
+      ctx.rotate(rot);
+      ctx.scale(size,size);
+
+      ctx.beginPath();
+      // classic heart path
+      ctx.moveTo(0, 0.35);
+      ctx.bezierCurveTo(0, 0.1, -0.35, 0.1, -0.35, -0.15);
+      ctx.bezierCurveTo(-0.35, -0.38, -0.1, -0.45, 0, -0.25);
+      ctx.bezierCurveTo(0.1, -0.45, 0.35, -0.38, 0.35, -0.15);
+      ctx.bezierCurveTo(0.35, 0.1, 0, 0.1, 0, 0.35);
+      ctx.closePath();
+
+      ctx.fillStyle = color;
+      ctx.fill();
+      ctx.restore();
+    }
+
+    let animating = false;
+    function burstHearts(){
+      const cx = window.innerWidth/2;
+      const cy = window.innerHeight*0.22; // near top of modal
+      const colors = ["#ff4f93","#ff2f6d","#e11d48","#ffd6e6","#ff9fc2"];
+
+      for(let i=0;i<90;i++){
+        hearts.push({
+          x: cx + rand(-40,40),
+          y: cy + rand(-20,20),
+          vx: rand(-3.6,3.6),
+          vy: rand(-6.8,-2.8),
+          g: rand(0.10,0.18),
+          rot: rand(0,Math.PI*2),
+          vr: rand(-0.12,0.12),
+          size: rand(10,18),
+          life: rand(48,78),
+          color: colors[Math.floor(Math.random()*colors.length)],
+          alpha: 1
+        });
+      }
+
+      if(!animating){
+        animating = true;
+        requestAnimationFrame(tickHearts);
+      }
+    }
+
+    function tickHearts(){
+      ctx.clearRect(0,0,window.innerWidth, window.innerHeight);
+
+      for(let i=hearts.length-1;i>=0;i--){
+        const p = hearts[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += p.g;
+        p.rot += p.vr;
+        p.life -= 1;
+        p.alpha = Math.max(0, p.life / 78);
+
+        ctx.globalAlpha = p.alpha;
+        drawHeart(p.x, p.y, p.size/40, p.rot, p.color);
+
+        if(p.life <= 0){
+          hearts.splice(i,1);
+        }
+      }
+      ctx.globalAlpha = 1;
+
+      if(hearts.length > 0){
+        requestAnimationFrame(tickHearts);
+      }else{
+        animating = false;
+        ctx.clearRect(0,0,window.innerWidth, window.innerHeight);
+      }
+    }
 
     /* init */
     renderGrid();
