@@ -18,67 +18,20 @@
       --ok:#7CFFB2;
     }
     *{box-sizing:border-box}
-    body{
-      margin:0;
-      background:var(--bg);
-      color:var(--text);
-      font-family: Georgia, "Times New Roman", Times, serif;
-    }
+    body{margin:0;background:var(--bg);color:var(--text);font-family: Georgia, "Times New Roman", Times, serif;}
     a{color:var(--gold); text-decoration:underline; text-decoration-color:var(--gold)}
-    .wrap{max-width:1100px; margin:0 auto; padding:24px 16px 48px}
-    .topbar{
-      border:2px solid var(--gold);
-      background:var(--panel);
-      border-radius:16px;
-      overflow:hidden;
-    }
-    .topbar .ornate{
-      padding:12px 16px;
-      border-bottom:1px solid var(--gold);
-      color:var(--gold);
-      text-align:center;
-      font-size:18px;
-    }
-    .topbar .head{
-      padding:22px 18px 16px;
-      text-align:center;
-    }
-    .title{
-      margin:0;
-      font-size:34px;
-      letter-spacing:1px;
-      line-height:1.15;
-    }
-    .subtitle{
-      margin-top:10px;
-      color:var(--muted);
-      font-size:13px;
-    }
-    .ruleline{
-      height:1px;
-      background:var(--gold);
-      margin:14px auto 8px;
-      max-width:520px;
-    }
-    .flourish{
-      color:var(--gold);
-      font-size:16px;
-      margin-bottom:4px;
-    }
-    .intro{
-      margin:0 auto 18px;
-      max-width:780px;
-      color:var(--text);
-      font-size:16px;
-      line-height:1.65;
-    }
-
-    .grid{
-      display:grid;
-      grid-template-columns: repeat( auto-fit, minmax(210px, 1fr) );
-      gap:14px;
-      margin-top:18px;
-    }
+    .wrap{max-width:1100px;margin:0 auto;padding:24px 16px 48px}
+    .topbar{border:2px solid var(--gold);background:var(--panel);border-radius:16px;overflow:hidden;}
+    .topbar .ornate{padding:12px 16px;border-bottom:1px solid var(--gold);color:var(--gold);text-align:center;font-size:18px;}
+    .topbar .head{padding:22px 18px 16px;text-align:center;}
+    .title{margin:0;font-size:34px;letter-spacing:1px;line-height:1.15;}
+    .subtitle{margin-top:10px;color:var(--muted);font-size:13px;}
+    .ruleline{height:1px;background:var(--gold);margin:14px auto 8px;max-width:520px;}
+    .flourish{color:var(--gold);font-size:16px;margin-bottom:4px;}
+    .intro{margin:0 auto 18px;max-width:780px;color:var(--text);font-size:16px;line-height:1.65;}
+    .rules{font-family:"Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;font-size:13px;line-height:1.55;color:var(--muted);}
+    .rules strong{color:var(--text)}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-top:18px;}
     .card{
       border:1px solid var(--gold);
       background:var(--panel2);
@@ -86,25 +39,25 @@
       padding:14px;
       cursor:pointer;
       transition:transform .08s ease, box-shadow .08s ease;
-      box-shadow: 0 10px 30px rgba(0,0,0,.25);
-      min-height:140px;
+      box-shadow:0 10px 30px rgba(0,0,0,.25);
+      min-height:132px;
     }
     .card:hover{transform:translateY(-1px)}
-    .card:focus{outline:2px solid var(--gold); outline-offset:2px}
-    .card .row{display:flex; gap:12px; align-items:center}
+    .card:focus{outline:2px solid var(--gold);outline-offset:2px}
+    .card .row{display:flex;gap:12px;align-items:center}
     .mailbox{
-      width:54px; height:54px;
+      width:54px;height:54px;
       border:1px solid var(--gold);
       border-radius:14px;
-      display:flex; align-items:center; justify-content:center;
-      background: #0f0f10;
+      display:flex;align-items:center;justify-content:center;
+      background:#0f0f10;
       flex:0 0 auto;
       position:relative;
     }
     .mailbox:before{
       content:"";
       position:absolute;
-      width:28px; height:16px;
+      width:28px;height:16px;
       border:1px solid var(--gold);
       border-radius:6px;
       top:11px;
@@ -112,69 +65,23 @@
     .mailbox:after{
       content:"";
       position:absolute;
-      width:28px; height:20px;
+      width:28px;height:20px;
       border:1px solid var(--gold);
       border-radius:6px;
       bottom:9px;
       background:linear-gradient(180deg, rgba(200,166,75,.08), rgba(200,166,75,.02));
     }
-    .name{
-      font-size:18px;
-      margin:0;
-      color:var(--white);
-      line-height:1.2;
-    }
-    .meta{
-      margin-top:6px;
-      font-size:12px;
-      color:var(--muted);
-      line-height:1.4;
-    }
-    .pill{
-      display:inline-block;
-      font-size:11px;
-      padding:4px 8px;
-      border-radius:999px;
-      border:1px solid var(--gold);
-      color:var(--gold);
-      margin-top:10px;
-    }
-
-    .layout{
-      display:grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap:14px;
-      margin-top:18px;
-      align-items:start;
-    }
-    @media (max-width: 860px){
-      .layout{grid-template-columns:1fr}
-    }
-
-    .panel{
-      border:1px solid var(--gold);
-      background:var(--panel2);
-      border-radius:16px;
-      overflow:hidden;
-    }
+    .name{font-size:18px;margin:0;color:var(--white);line-height:1.2;}
+    .meta{margin-top:6px;font-size:12px;color:var(--muted);line-height:1.4;}
+    .layout{display:grid;grid-template-columns:1.2fr 0.8fr;gap:14px;margin-top:18px;align-items:start;}
+    @media (max-width: 860px){.layout{grid-template-columns:1fr}}
+    .panel{border:1px solid var(--gold);background:var(--panel2);border-radius:16px;overflow:hidden;}
     .panel .hd{
-      padding:14px 16px;
-      background:var(--header);
-      border-bottom:1px solid var(--gold);
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      align-items:center;
-      flex-wrap:wrap;
+      padding:14px 16px;background:var(--header);border-bottom:1px solid var(--gold);
+      display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;
     }
-    .panel .hd h2{
-      margin:0;
-      font-size:18px;
-      color:var(--gold);
-      letter-spacing:.4px;
-    }
+    .panel .hd h2{margin:0;font-size:18px;color:var(--gold);letter-spacing:.4px;}
     .panel .bd{padding:16px}
-
     .note{
       border:1px solid rgba(200,166,75,.65);
       border-radius:14px;
@@ -183,98 +90,35 @@
       background:#0f0f10;
     }
     .note .msg{
-      margin:0;
-      font-size:15px;
-      line-height:1.65;
-      color:var(--white);
-      white-space:pre-wrap;
-      word-break:break-word;
+      margin:0;font-size:15px;line-height:1.65;color:var(--white);
+      white-space:pre-wrap;word-break:break-word;
     }
-    .note .from{
-      margin-top:10px;
-      font-size:12px;
-      color:var(--muted);
-    }
-    .empty{
-      color:var(--muted);
-      font-size:14px;
-      line-height:1.6;
-      padding:10px 0;
-    }
-
-    textarea, input{
+    .note .from{margin-top:10px;font-size:12px;color:var(--muted);}
+    .empty{color:var(--muted);font-size:14px;line-height:1.6;padding:10px 0;}
+    textarea, input, select{
       width:100%;
       border-radius:12px;
       border:1px solid rgba(200,166,75,.75);
       background:#0f0f10;
       color:var(--white);
       padding:10px 12px;
-      font-family: "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
+      font-family:"Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
       font-size:14px;
       outline:none;
     }
-    textarea{min-height:150px; resize:vertical; line-height:1.55}
-    label{display:block; font-size:12px; color:var(--muted); margin:10px 0 6px}
-    .actions{
-      display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;
-      align-items:center;
-    }
+    textarea{min-height:150px;resize:vertical;line-height:1.55}
+    label{display:block;font-size:12px;color:var(--muted);margin:10px 0 6px}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;align-items:center;}
     .btn{
-      display:inline-block;
-      border-radius:10px;
-      border:1px solid var(--gold);
-      background:var(--gold);
-      color:#111;
-      font-weight:700;
-      padding:10px 14px;
-      font-size:13px;
-      letter-spacing:.3px;
-      text-decoration:none;
-      cursor:pointer;
-      font-family: Georgia, "Times New Roman", Times, serif;
+      display:inline-block;border-radius:10px;border:1px solid var(--gold);
+      background:var(--gold);color:#111;font-weight:700;padding:10px 14px;font-size:13px;letter-spacing:.3px;
+      text-decoration:none;cursor:pointer;font-family: Georgia, "Times New Roman", Times, serif;
     }
-    .btn.secondary{
-      background:transparent;
-      color:var(--gold);
-    }
-    .status{
-      font-size:12px;
-      color:var(--muted);
-    }
+    .btn.secondary{background:transparent;color:var(--gold);}
+    .status{font-size:12px;color:var(--muted);}
     .status.err{color:var(--danger)}
     .status.ok{color:var(--ok)}
-
-    .rules{
-      font-family:"Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
-      font-size:13px;
-      line-height:1.55;
-      color:var(--muted);
-    }
-    .rules strong{color:var(--text)}
-    .small{
-      font-size:12px;
-      color:var(--muted);
-      line-height:1.5;
-      margin-top:10px;
-    }
-    .chiprow{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
-    .chip{
-      border:1px solid rgba(200,166,75,.65);
-      border-radius:999px;
-      padding:6px 10px;
-      font-size:12px;
-      color:var(--text);
-      background:#0f0f10;
-    }
-    .kbd{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      font-size:12px;
-      border:1px solid rgba(200,166,75,.5);
-      border-radius:8px;
-      padding:2px 6px;
-      color:var(--gold);
-      background:#0f0f10;
-    }
+    .small{font-size:12px;color:var(--muted);line-height:1.5;margin-top:10px}
   </style>
 </head>
 <body>
@@ -287,20 +131,18 @@
         <div class="ruleline"></div>
         <div class="flourish">❦</div>
         <p class="intro">
-          Click a mailbox to “open” it and read notes inside. Want to leave a note? Write one at the bottom and send it.
+          Click a mailbox to open it and read what’s inside. Leave a note at the bottom.
           <br><br>
           <span class="rules">
-            <strong>Rules:</strong> kind messages only • <strong>no romantic pressure</strong> • <strong>no profanity</strong> • inside jokes are fine if they’re not mean.
+            <strong>Rules:</strong> kind messages only • no romantic pressure • no profanity
           </span>
         </p>
       </div>
     </div>
 
-    <!-- Mailbox grid -->
     <div id="mailboxGrid" class="grid" aria-label="Mailbox list"></div>
 
     <div class="layout">
-      <!-- OPEN MAILBOX / NOTES -->
       <div class="panel" aria-live="polite">
         <div class="hd">
           <h2 id="openTitle">Open a mailbox</h2>
@@ -311,93 +153,81 @@
         </div>
       </div>
 
-      <!-- COMPOSER -->
       <div class="panel">
         <div class="hd">
           <h2>Write a note</h2>
           <div class="status" id="composeStatus"></div>
         </div>
         <div class="bd">
-          <div class="rules">
-            Your note will open as a <strong>GitHub Issue</strong> so you can “sign + send.”
-            Notes start as <span class="kbd">pending</span> and show up once approved (moderation).
-          </div>
-
           <label for="toSelect">To</label>
-          <select id="toSelect" style="width:100%; border-radius:12px; border:1px solid rgba(200,166,75,.75); background:#0f0f10; color:#fff; padding:10px 12px; font-size:14px;">
-          </select>
+          <select id="toSelect"></select>
 
           <label for="message">Message</label>
-          <textarea id="message" placeholder="Write something kind… (inside jokes allowed)"></textarea>
+          <textarea id="message" placeholder="Write your note…"></textarea>
 
-          <label for="signature">Signature (optional — leave blank to be anonymous)</label>
-          <input id="signature" type="text" placeholder="Your name (or blank)" />
+          <label for="signature">Signature (optional)</label>
+          <input id="signature" type="text" placeholder="Leave blank to be anonymous" />
 
-          <div class="chiprow">
-            <div class="chip">✅ Kind messages only</div>
-            <div class="chip">✅ No romantic pressure</div>
-            <div class="chip">✅ No profanity</div>
-          </div>
+          <input id="company" type="text" style="display:none" tabindex="-1" autocomplete="off" />
 
           <div class="actions">
-            <button class="btn" id="sendBtn">Sign & Send</button>
+            <button class="btn" id="sendBtn" type="button">Sign & Send</button>
             <button class="btn secondary" id="clearBtn" type="button">Clear</button>
           </div>
 
-          <div class="small">
-            Tip: If you want anonymity, leave signature blank. If you include an inside joke, make sure it still reads kind to anyone else.
-          </div>
+          <div class="small">Notes appear instantly after sending.</div>
         </div>
       </div>
-    </div>
-
-    <div class="small" style="margin-top:14px; text-align:center;">
-      Powered by GitHub Issues • Visible notes are labeled <span class="kbd">approved</span>
     </div>
   </div>
 
   <script>
     /***********************
-     * CONFIG (EDIT THIS)
+     * CONFIG (UPDATED ✅)
      ***********************/
-    const GITHUB_OWNER = "YOUR_ORG_OR_USERNAME";
-    const GITHUB_REPO  = "YOUR_REPO_NAME";
+    const API_URL = "https://script.google.com/macros/s/AKfycbx1cKc_5vESx9v3764CEJLu8A3Wn2Nwe8pWBGz0mrnT91kLJOmuW9SzZy3LY8PnI66UnA/exec";
 
-    // Labels used for moderation + routing
-    const LABEL_APPROVED = "approved";
-    const LABEL_PENDING  = "pending";
-    const MAILBOX_LABEL_PREFIX = "mailbox-"; // e.g., mailbox-stella
-
-    // Ambassadors (edit this list)
     const AMBASSADORS = [
-      { name: "Stella", slug: "stella" },
-      { name: "Axani",  slug: "axani"  },
-      { name: "Armaan", slug: "armaan" },
-      // add more...
+      { name:"Anna", slug:"anna" },
+      { name:"Abigail", slug:"abigail" },
+      { name:"Adrian", slug:"adrian" },
+      { name:"Alayna", slug:"alayna" },
+      { name:"Anjali", slug:"anjali" },
+      { name:"Armaan", slug:"armaan" },
+      { name:"Axani", slug:"axani" },
+      { name:"Brooke", slug:"brooke" },
+      { name:"Chloe", slug:"chloe" },
+      { name:"Colin", slug:"colin" },
+      { name:"Ella", slug:"ella" },
+      { name:"Gabe", slug:"gabe" },
+      { name:"Hannah", slug:"hannah" },
+      { name:"Jaya", slug:"jaya" },
+      { name:"Julia", slug:"julia" },
+      { name:"Makenzie", slug:"makenzie" },
+      { name:"Mitchell", slug:"mitchell" },
+      { name:"Neha", slug:"neha" },
+      { name:"Olivia", slug:"olivia" },
+      { name:"Sam", slug:"sam" },
+      { name:"Sarah", slug:"sarah" },
+      { name:"Sruthi", slug:"sruthi" },
+      { name:"Stella", slug:"stella" },
+      { name:"Subrina", slug:"subrina" },
+      { name:"Tylia", slug:"tylia" }
     ];
 
-    /***********************
-     * BASIC SAFETY FILTER
-     * (client-side)
-     ***********************/
-    const PROFANITY = [
-      // keep this list short/obvious; add any you want blocked
-      "fuck","shit","bitch","asshole","dick","pussy","cunt","slut","whore","nigger","faggot"
-    ];
+    const PROFANITY = ["fuck","shit","bitch","asshole","dick","pussy","cunt","slut","whore","nigger","faggot"];
 
+    function escapeRegExp(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
     function containsProfanity(text){
       const t = (text || "").toLowerCase();
       return PROFANITY.some(w => new RegExp(`\\b${escapeRegExp(w)}\\b`, "i").test(t));
     }
-    function escapeRegExp(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
 
-    /***********************
-     * DOM
-     ***********************/
     const elGrid   = document.getElementById("mailboxGrid");
     const elTo     = document.getElementById("toSelect");
     const elMsg    = document.getElementById("message");
     const elSig    = document.getElementById("signature");
+    const elBot    = document.getElementById("company");
     const elSend   = document.getElementById("sendBtn");
     const elClear  = document.getElementById("clearBtn");
 
@@ -408,17 +238,21 @@
 
     let currentMailbox = null;
 
-    /***********************
-     * INIT UI
-     ***********************/
     function init(){
-      // Populate select
       elTo.innerHTML = AMBASSADORS.map(a => `<option value="${a.slug}">${a.name}</option>`).join("");
 
-      // Build mailbox grid
-      elGrid.innerHTML = AMBASSADORS.map(a => mailboxCardHTML(a)).join("");
+      elGrid.innerHTML = AMBASSADORS.map(a => `
+        <div class="card" role="button" tabindex="0" data-mailbox="${a.slug}" aria-label="Open mailbox for ${a.name}">
+          <div class="row">
+            <div class="mailbox" aria-hidden="true"></div>
+            <div>
+              <p class="name">${escapeHTML(a.name)}</p>
+              <div class="meta">Click to open</div>
+            </div>
+          </div>
+        </div>
+      `).join("");
 
-      // Click handlers
       elGrid.querySelectorAll("[data-mailbox]").forEach(btn => {
         btn.addEventListener("click", () => openMailbox(btn.getAttribute("data-mailbox")));
         btn.addEventListener("keydown", (e) => {
@@ -429,7 +263,6 @@
         });
       });
 
-      // Send handlers
       elSend.addEventListener("click", onSend);
       elClear.addEventListener("click", () => {
         elMsg.value = "";
@@ -438,27 +271,6 @@
       });
     }
 
-    function mailboxCardHTML(a){
-      return `
-        <div class="card" role="button" tabindex="0" data-mailbox="${a.slug}" aria-label="Open mailbox for ${a.name}">
-          <div class="row">
-            <div class="mailbox" aria-hidden="true"></div>
-            <div>
-              <p class="name">${escapeHTML(a.name)}</p>
-              <div class="meta">Click to open</div>
-              <div class="pill">${MAILBOX_LABEL_PREFIX}${a.slug}</div>
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    /***********************
-     * OPEN MAILBOX (READ)
-     * Reads only issues that have BOTH:
-     * - approved
-     * - mailbox-<slug>
-     ***********************/
     async function openMailbox(slug){
       const amb = AMBASSADORS.find(a => a.slug === slug);
       if(!amb) return;
@@ -469,9 +281,14 @@
       setLoadStatus("Loading…", "");
 
       try{
-        const issues = await fetchApprovedIssuesForMailbox(slug);
-        renderNotes(issues, amb.name);
-        setLoadStatus(`${issues.length} note(s)`, "ok");
+        const url = `${API_URL}?action=list&to=${encodeURIComponent(slug)}&t=${Date.now()}`;
+        const res = await fetch(url);
+        if(!res.ok) throw new Error(`API error: ${res.status}`);
+        const data = await res.json();
+
+        const notes = Array.isArray(data.notes) ? data.notes : [];
+        renderNotes(notes, amb.name);
+        setLoadStatus(`${notes.length} note(s)`, "ok");
       }catch(err){
         console.error(err);
         elNotes.innerHTML = `<div class="empty">Couldn’t load notes right now. Try again in a minute.</div>`;
@@ -479,133 +296,77 @@
       }
     }
 
-    async function fetchApprovedIssuesForMailbox(slug){
-      const labels = encodeURIComponent(`${LABEL_APPROVED},${MAILBOX_LABEL_PREFIX}${slug}`);
-      const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/issues?state=open&per_page=100&labels=${labels}`;
-      const res = await fetch(url, {
-        headers: { "Accept": "application/vnd.github+json" }
-      });
-      if(!res.ok) throw new Error(`GitHub API error: ${res.status}`);
-      const data = await res.json();
-      // filter out PRs (GitHub issues API includes pull requests)
-      return (data || []).filter(it => !it.pull_request);
-    }
-
-    function renderNotes(issues, mailboxName){
-      if(!issues || issues.length === 0){
+    function renderNotes(notes, mailboxName){
+      if(!notes.length){
         elNotes.innerHTML = `<div class="empty">No notes yet for <strong>${escapeHTML(mailboxName)}</strong>. Be the first 💌</div>`;
         return;
       }
-
-      // Newest first
-      const sorted = [...issues].sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
-
-      elNotes.innerHTML = sorted.map(issue => {
-        const parsed = parseIssueBody(issue.body || "");
-        const msg = parsed.message || "(no message)";
-        const from = (parsed.from && parsed.from.trim()) ? parsed.from.trim() : "Anonymous";
+      notes.sort((a,b) => (b.ts||0) - (a.ts||0));
+      elNotes.innerHTML = notes.map(n => {
+        const from = (n.from && n.from.trim()) ? n.from.trim() : "Anonymous";
         return `
           <div class="note">
-            <p class="msg">${escapeHTML(msg)}</p>
+            <p class="msg">${escapeHTML(n.message || "")}</p>
             <div class="from">— ${escapeHTML(from)}</div>
           </div>
         `;
       }).join("");
     }
 
-    // Expected body format (we generate this in send):
-    // ### Message
-    // ...
-    // ### From
-    // ...
-    function parseIssueBody(body){
-      const out = { message:"", from:"" };
-      const msgMatch = body.match(/###\s*Message\s*([\s\S]*?)###\s*From\s*([\s\S]*)/i);
-      if(msgMatch){
-        out.message = (msgMatch[1] || "").trim();
-        out.from = (msgMatch[2] || "").trim();
-        return out;
-      }
-      // fallback: try to find From section separately
-      const fromMatch = body.match(/###\s*From\s*([\s\S]*)/i);
-      if(fromMatch){
-        out.from = (fromMatch[1] || "").trim();
-        out.message = body.replace(fromMatch[0], "").trim();
-      }else{
-        out.message = body.trim();
-      }
-      return out;
-    }
-
-    /***********************
-     * SEND NOTE (WRITE)
-     * Opens GitHub "new issue" page with prefilled fields
-     * - label: pending + mailbox-<slug>
-     * - title: 💌 Valentine for <Name>
-     ***********************/
-    function onSend(){
-      const slug = elTo.value;
-      const amb  = AMBASSADORS.find(a => a.slug === slug);
+    async function onSend(){
+      const to = elTo.value;
+      const amb = AMBASSADORS.find(a => a.slug === to);
 
       const message = (elMsg.value || "").trim();
       const signature = (elSig.value || "").trim();
 
-      // Validation
       if(!amb){
         setComposeStatus("Choose a recipient.", "err");
+        return;
+      }
+      if(elBot.value){
+        setComposeStatus("Couldn’t send. Try again.", "err");
         return;
       }
       if(message.length < 2){
         setComposeStatus("Write a message before sending.", "err");
         return;
       }
-      // No profanity (in message or signature)
-      if(containsProfanity(message) || containsProfanity(signature)){
-        setComposeStatus("Please remove profanity and try again.", "err");
-        return;
-      }
-      // No romantic pressure (soft guardrail: show reminder, don't auto-block)
-      // You can hard-block specific phrases if you want; right now we enforce rules by reminder + moderation.
-      // Also prevent excessively long spam
       if(message.length > 1200){
         setComposeStatus("Keep it under 1200 characters.", "err");
         return;
       }
+      if(containsProfanity(message) || containsProfanity(signature)){
+        setComposeStatus("Please remove profanity and try again.", "err");
+        return;
+      }
 
-      // Build GitHub issue URL
-      const labels = `${LABEL_PENDING},${MAILBOX_LABEL_PREFIX}${slug}`;
-      const title  = `💌 Valentine for ${amb.name}`;
+      setComposeStatus("Sending…", "");
 
-      const body =
-`### Message
-${message}
+      try{
+        const payload = { to, message, from: signature };
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type":"text/plain;charset=utf-8" },
+          body: JSON.stringify(payload)
+        });
 
-### From
-${signature || ""}
+        const data = await res.json().catch(()=>({}));
+        if(!res.ok || data.ok !== true){
+          throw new Error(data.error || `Send failed (${res.status})`);
+        }
 
----
-Rules: kind messages only • no romantic pressure • no profanity • inside jokes allowed (keep it kind).`;
+        setComposeStatus("Sent 💛", "ok");
+        elMsg.value = "";
+        elSig.value = "";
 
-      const issueUrl = makePrefilledIssueUrl({ labels, title, body });
-
-      setComposeStatus("Opening GitHub to send…", "ok");
-      window.open(issueUrl, "_blank", "noopener,noreferrer");
+        openMailbox(to);
+      }catch(err){
+        console.error(err);
+        setComposeStatus("Couldn’t send. Try again.", "err");
+      }
     }
 
-    function makePrefilledIssueUrl({ labels, title, body }){
-      // This uses GitHub's built-in prefill query params for new issues.
-      // (Works best when Issues are enabled + repo is public or users have access.)
-      const base = `https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}/issues/new`;
-      const params = new URLSearchParams();
-      params.set("labels", labels);
-      params.set("title", title);
-      params.set("body", body);
-      return `${base}?${params.toString()}`;
-    }
-
-    /***********************
-     * STATUS HELPERS
-     ***********************/
     function setLoadStatus(text, kind){
       elLoadSt.textContent = text || "";
       elLoadSt.className = "status" + (kind ? " " + kind : "");
@@ -615,9 +376,6 @@ Rules: kind messages only • no romantic pressure • no profanity • inside j
       elCompSt.className = "status" + (kind ? " " + kind : "");
     }
 
-    /***********************
-     * ESCAPE
-     ***********************/
     function escapeHTML(s){
       return String(s ?? "")
         .replace(/&/g,"&amp;")
