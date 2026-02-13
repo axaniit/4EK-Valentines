@@ -1,391 +1,881 @@
+<!-- =========================
+4EK Valentines Mailboxes (GitHub Pages) — FULL REPLACE
+- No sign-in required to read or send
+- Uses your Apps Script Web App as the backend
+- 25 cute Valentine mailboxes (first name only)
+========================= -->
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>4EK Valentine Mailboxes</title>
+  <title>4EK Valentines Mailboxes 💌</title>
+  <meta name="color-scheme" content="light">
   <style>
     :root{
-      --bg:#0B0B0C;
-      --panel:#111;
-      --panel2:#121212;
-      --header:#171717;
-      --text:#EDE8D6;
-      --muted:#B7B2A3;
+      --bg:#fff5f8;
+      --card:#ffffff;
+      --ink:#1c0f16;
+      --muted:#6b3a4f;
+      --pink:#ff4d87;
+      --pink2:#ff2d73;
+      --red:#e11d48;
       --gold:#C8A64B;
-      --white:#ffffff;
-      --danger:#ff6b6b;
-      --ok:#7CFFB2;
+      --shadow: 0 12px 30px rgba(0,0,0,.12);
+      --ring: 0 0 0 3px rgba(255,77,135,.18);
+      --radius:18px;
+      --radius2:22px;
+      font-synthesis-weight:none;
     }
     *{box-sizing:border-box}
-    body{margin:0;background:var(--bg);color:var(--text);font-family: Georgia, "Times New Roman", Times, serif;}
-    a{color:var(--gold); text-decoration:underline; text-decoration-color:var(--gold)}
-    .wrap{max-width:1100px;margin:0 auto;padding:24px 16px 48px}
-    .topbar{border:2px solid var(--gold);background:var(--panel);border-radius:16px;overflow:hidden;}
-    .topbar .ornate{padding:12px 16px;border-bottom:1px solid var(--gold);color:var(--gold);text-align:center;font-size:18px;}
-    .topbar .head{padding:22px 18px 16px;text-align:center;}
-    .title{margin:0;font-size:34px;letter-spacing:1px;line-height:1.15;}
-    .subtitle{margin-top:10px;color:var(--muted);font-size:13px;}
-    .ruleline{height:1px;background:var(--gold);margin:14px auto 8px;max-width:520px;}
-    .flourish{color:var(--gold);font-size:16px;margin-bottom:4px;}
-    .intro{margin:0 auto 18px;max-width:780px;color:var(--text);font-size:16px;line-height:1.65;}
-    .rules{font-family:"Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;font-size:13px;line-height:1.55;color:var(--muted);}
-    .rules strong{color:var(--text)}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-top:18px;}
-    .card{
-      border:1px solid var(--gold);
-      background:var(--panel2);
-      border-radius:16px;
-      padding:14px;
-      cursor:pointer;
-      transition:transform .08s ease, box-shadow .08s ease;
-      box-shadow:0 10px 30px rgba(0,0,0,.25);
-      min-height:132px;
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--ink);
+      background:
+        radial-gradient(900px 400px at 12% -10%, rgba(255,77,135,.20), transparent 60%),
+        radial-gradient(900px 420px at 92% 0%, rgba(225,29,72,.16), transparent 58%),
+        linear-gradient(180deg, #fff5f8, #ffeaf1 55%, #fff5f8);
+      min-height:100vh;
     }
-    .card:hover{transform:translateY(-1px)}
-    .card:focus{outline:2px solid var(--gold);outline-offset:2px}
-    .card .row{display:flex;gap:12px;align-items:center}
-    .mailbox{
-      width:54px;height:54px;
-      border:1px solid var(--gold);
-      border-radius:14px;
-      display:flex;align-items:center;justify-content:center;
-      background:#0f0f10;
-      flex:0 0 auto;
-      position:relative;
+    header{
+      padding:26px 16px 12px;
+      text-align:center;
     }
-    .mailbox:before{
-      content:"";
-      position:absolute;
-      width:28px;height:16px;
-      border:1px solid var(--gold);
-      border-radius:6px;
-      top:11px;
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 14px;
+      border-radius:999px;
+      background:rgba(255,255,255,.65);
+      border:1px solid rgba(255,77,135,.25);
+      box-shadow: 0 8px 20px rgba(0,0,0,.08);
+      backdrop-filter: blur(6px);
     }
-    .mailbox:after{
-      content:"";
-      position:absolute;
-      width:28px;height:20px;
-      border:1px solid var(--gold);
-      border-radius:6px;
-      bottom:9px;
-      background:linear-gradient(180deg, rgba(200,166,75,.08), rgba(200,166,75,.02));
+    .badge .dot{
+      width:10px;height:10px;border-radius:50%;
+      background: linear-gradient(180deg,var(--pink),var(--red));
+      box-shadow: 0 0 0 4px rgba(255,77,135,.18);
     }
-    .name{font-size:18px;margin:0;color:var(--white);line-height:1.2;}
-    .meta{margin-top:6px;font-size:12px;color:var(--muted);line-height:1.4;}
-    .layout{display:grid;grid-template-columns:1.2fr 0.8fr;gap:14px;margin-top:18px;align-items:start;}
-    @media (max-width: 860px){.layout{grid-template-columns:1fr}}
-    .panel{border:1px solid var(--gold);background:var(--panel2);border-radius:16px;overflow:hidden;}
-    .panel .hd{
-      padding:14px 16px;background:var(--header);border-bottom:1px solid var(--gold);
-      display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;
+    h1{
+      margin:12px 0 6px;
+      font-size: clamp(26px, 4vw, 40px);
+      letter-spacing:.2px;
     }
-    .panel .hd h2{margin:0;font-size:18px;color:var(--gold);letter-spacing:.4px;}
-    .panel .bd{padding:16px}
-    .note{
-      border:1px solid rgba(200,166,75,.65);
-      border-radius:14px;
-      padding:12px 12px;
-      margin-bottom:10px;
-      background:#0f0f10;
+    .sub{
+      margin:0 auto;
+      max-width:880px;
+      color:var(--muted);
+      line-height:1.45;
+      font-size:15px;
     }
-    .note .msg{
-      margin:0;font-size:15px;line-height:1.65;color:var(--white);
-      white-space:pre-wrap;word-break:break-word;
+    .sub strong{color:var(--ink)}
+    .wrap{
+      max-width:1100px;
+      margin: 0 auto;
+      padding: 14px 16px 30px;
     }
-    .note .from{margin-top:10px;font-size:12px;color:var(--muted);}
-    .empty{color:var(--muted);font-size:14px;line-height:1.6;padding:10px 0;}
-    textarea, input, select{
+    .topbar{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      margin: 16px 0 12px;
+    }
+    .search{
+      flex: 1 1 260px;
+      max-width: 420px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      background: rgba(255,255,255,.75);
+      border:1px solid rgba(255,77,135,.25);
+      border-radius: 999px;
+      padding: 10px 14px;
+      box-shadow: 0 10px 24px rgba(0,0,0,.08);
+    }
+    .search input{
+      border:none;
+      outline:none;
+      background:transparent;
       width:100%;
-      border-radius:12px;
-      border:1px solid rgba(200,166,75,.75);
-      background:#0f0f10;
-      color:var(--white);
-      padding:10px 12px;
-      font-family:"Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
       font-size:14px;
+      color:var(--ink);
+    }
+    .pill{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:10px 12px;
+      border-radius:999px;
+      background: rgba(255,255,255,.75);
+      border:1px solid rgba(255,77,135,.25);
+      box-shadow: 0 10px 24px rgba(0,0,0,.08);
+      color:var(--muted);
+      font-size:13px;
+    }
+    .pill b{color:var(--ink)}
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(5, minmax(180px, 1fr));
+      gap: 14px;
+    }
+    @media (max-width: 1040px){ .grid{grid-template-columns: repeat(4, minmax(180px, 1fr));} }
+    @media (max-width: 840px){ .grid{grid-template-columns: repeat(3, minmax(180px, 1fr));} }
+    @media (max-width: 620px){ .grid{grid-template-columns: repeat(2, minmax(160px, 1fr));} }
+    @media (max-width: 380px){ .grid{grid-template-columns: 1fr;} }
+
+    .card{
+      background: rgba(255,255,255,.82);
+      border:1px solid rgba(255,77,135,.22);
+      border-radius: var(--radius2);
+      padding: 14px 14px 12px;
+      box-shadow: var(--shadow);
+      cursor:pointer;
+      position:relative;
+      overflow:hidden;
+      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+      min-height: 148px;
+    }
+    .card:hover{ transform: translateY(-2px); box-shadow: 0 16px 36px rgba(0,0,0,.14); border-color: rgba(255,77,135,.35); }
+    .card:focus{ outline:none; box-shadow: var(--shadow), var(--ring); }
+    .card:before{
+      content:"";
+      position:absolute;
+      inset:-60px -60px auto auto;
+      width:140px;height:140px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,77,135,.25), transparent 65%);
+      transform: rotate(18deg);
+    }
+    .name{
+      margin-top:10px;
+      font-weight:800;
+      letter-spacing:.2px;
+      font-size:16px;
+    }
+    .slug{
+      font-size:12px;
+      color:var(--muted);
+      margin-top:2px;
+    }
+    .mini{
+      margin-top:10px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      color:var(--muted);
+      font-size:12px;
+    }
+    .count{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255,77,135,.10);
+      border:1px solid rgba(255,77,135,.18);
+      color:#7a1b3a;
+      font-weight:700;
+      white-space:nowrap;
+    }
+    .heartDot{
+      width:10px;height:10px; border-radius:50%;
+      background: linear-gradient(180deg,var(--pink),var(--red));
+      box-shadow: 0 0 0 4px rgba(255,77,135,.18);
+    }
+
+    /* Valentine mailbox icon */
+    .mailbox{
+      width:74px;height:64px;
+      position:relative;
+      flex:0 0 auto;
+      border:none;
+      background:transparent;
+      margin-top:2px;
+    }
+    .mailbox .box{
+      position:absolute;
+      left:6px; right:10px; bottom:6px; top:18px;
+      border-radius:16px;
+      background: linear-gradient(180deg, #ff6fa8, #ff3b7a);
+      border:2px solid rgba(255,255,255,.35);
+      box-shadow: 0 10px 22px rgba(0,0,0,.18);
+    }
+    .mailbox .lid{
+      position:absolute;
+      left:10px; right:14px; top:12px;
+      height:20px;
+      border-radius:16px 16px 12px 12px;
+      background: linear-gradient(180deg, #ff8fbd, #ff5a96);
+      border:2px solid rgba(255,255,255,.35);
+      box-shadow: 0 6px 14px rgba(0,0,0,.14);
+    }
+    .mailbox .slot{
+      position:absolute;
+      left:20px; right:24px; top:22px;
+      height:8px;
+      border-radius:8px;
+      background: rgba(0,0,0,.20);
+      border:1px solid rgba(255,255,255,.25);
+    }
+    .mailbox .post{
+      position:absolute;
+      left:12px;
+      bottom:0;
+      width:10px;height:16px;
+      border-radius:10px;
+      background: linear-gradient(180deg,#ffd1e4,#ff9fc7);
+      border:1px solid rgba(255,255,255,.35);
+    }
+    .mailbox .flag{
+      position:absolute;
+      right:0;
+      top:18px;
+      width:10px;height:30px;
+      border-radius:10px;
+      background: linear-gradient(180deg,#ff2d55,#d81b60);
+      box-shadow: 0 8px 16px rgba(0,0,0,.16);
+    }
+    .mailbox .flag:after{
+      content:"";
+      position:absolute;
+      left:-10px; top:10px;
+      width:18px;height:12px;
+      border-radius:10px 10px 10px 4px;
+      background: linear-gradient(180deg,#ff4d6d,#ff2d55);
+      border:1px solid rgba(255,255,255,.25);
+    }
+    .mailbox .heart{
+      position:absolute;
+      left:50%;
+      top:36px;
+      width:16px;height:16px;
+      transform: translateX(-50%) rotate(45deg);
+      background: #ffe1ee;
+      border-radius:4px;
+      box-shadow: 0 4px 10px rgba(0,0,0,.12);
+    }
+    .mailbox .heart:before,
+    .mailbox .heart:after{
+      content:"";
+      position:absolute;
+      width:16px;height:16px;
+      background:#ffe1ee;
+      border-radius:50%;
+    }
+    .mailbox .heart:before{ left:-8px; top:0; }
+    .mailbox .heart:after{ left:0; top:-8px; }
+
+    /* Modal */
+    .overlay{
+      position:fixed; inset:0;
+      background: rgba(18,7,12,.55);
+      backdrop-filter: blur(4px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 18px;
+      z-index: 50;
+    }
+    .overlay.show{ display:flex; }
+
+    .modal{
+      width:min(980px, 100%);
+      max-height: 88vh;
+      overflow:hidden;
+      border-radius: 22px;
+      background: rgba(255,255,255,.92);
+      border:1px solid rgba(255,77,135,.25);
+      box-shadow: 0 24px 70px rgba(0,0,0,.25);
+      display:flex;
+      flex-direction:column;
+    }
+    .modalHeader{
+      padding: 14px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      border-bottom:1px solid rgba(255,77,135,.22);
+      background: linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,.75));
+    }
+    .mhLeft{
+      display:flex; align-items:center; gap:12px;
+      min-width:0;
+    }
+    .mhTitle{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      min-width:0;
+    }
+    .mhTitle .to{
+      font-weight:900;
+      font-size:16px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .mhTitle .hint{
+      font-size:12px;
+      color:var(--muted);
+    }
+    .closeBtn{
+      appearance:none;
+      border:none;
+      background: rgba(255,77,135,.12);
+      border:1px solid rgba(255,77,135,.20);
+      color:#7a1b3a;
+      font-weight:900;
+      border-radius: 12px;
+      padding: 10px 12px;
+      cursor:pointer;
+    }
+    .closeBtn:hover{ background: rgba(255,77,135,.18); }
+
+    .modalBody{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 0;
+      min-height: 0;
+      flex:1;
+    }
+    @media (max-width: 920px){
+      .modalBody{ grid-template-columns: 1fr; }
+    }
+
+    .notesPane{
+      padding: 14px 16px;
+      overflow:auto;
+      min-height: 0;
+      border-right:1px solid rgba(255,77,135,.18);
+    }
+    @media (max-width: 920px){
+      .notesPane{ border-right:none; border-bottom:1px solid rgba(255,77,135,.18); }
+    }
+
+    .composer{
+      padding: 14px 16px;
+      overflow:auto;
+      min-height:0;
+      background: rgba(255,77,135,.04);
+    }
+    .noteCard{
+      background:#fff;
+      border:1px solid rgba(255,77,135,.20);
+      border-radius: 18px;
+      padding: 12px 12px;
+      box-shadow: 0 10px 20px rgba(0,0,0,.06);
+      margin-bottom: 10px;
+      position:relative;
+      overflow:hidden;
+    }
+    .noteCard:before{
+      content:"";
+      position:absolute;
+      inset:-60px auto auto -60px;
+      width:160px;height:160px;
+      background: radial-gradient(circle at 60% 40%, rgba(255,77,135,.16), transparent 65%);
+      transform: rotate(-10deg);
+    }
+    .noteMsg{
+      position:relative;
+      z-index:1;
+      margin:0;
+      white-space:pre-wrap;
+      line-height:1.45;
+      color:#2a0f1b;
+      font-size:14px;
+    }
+    .noteMeta{
+      position:relative;
+      z-index:1;
+      margin-top:10px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      color:var(--muted);
+      font-size:12px;
+    }
+    .from{
+      font-weight:800;
+      color:#7a1b3a;
+    }
+
+    .empty{
+      border: 1px dashed rgba(255,77,135,.35);
+      background: rgba(255,255,255,.65);
+      border-radius: 18px;
+      padding: 14px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    label{
+      display:block;
+      font-size:12px;
+      color:var(--muted);
+      margin: 10px 0 6px;
+      font-weight:800;
+      letter-spacing:.2px;
+    }
+    input, textarea{
+      width:100%;
+      border-radius: 14px;
+      border:1px solid rgba(255,77,135,.25);
+      background: rgba(255,255,255,.9);
+      padding: 12px 12px;
+      font: inherit;
+      color: var(--ink);
       outline:none;
     }
-    textarea{min-height:150px;resize:vertical;line-height:1.55}
-    label{display:block;font-size:12px;color:var(--muted);margin:10px 0 6px}
-    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;align-items:center;}
-    .btn{
-      display:inline-block;border-radius:10px;border:1px solid var(--gold);
-      background:var(--gold);color:#111;font-weight:700;padding:10px 14px;font-size:13px;letter-spacing:.3px;
-      text-decoration:none;cursor:pointer;font-family: Georgia, "Times New Roman", Times, serif;
+    textarea{ min-height: 170px; resize: vertical; line-height:1.4; }
+    input:focus, textarea:focus{ box-shadow: var(--ring); border-color: rgba(255,77,135,.45); }
+
+    .help{
+      margin-top:8px;
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.35;
     }
-    .btn.secondary{background:transparent;color:var(--gold);}
-    .status{font-size:12px;color:var(--muted);}
-    .status.err{color:var(--danger)}
-    .status.ok{color:var(--ok)}
-    .small{font-size:12px;color:var(--muted);line-height:1.5;margin-top:10px}
+
+    .actions{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      margin-top: 12px;
+      flex-wrap:wrap;
+    }
+    .btn{
+      appearance:none;
+      border:none;
+      cursor:pointer;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-weight: 900;
+      letter-spacing:.2px;
+    }
+    .btnPrimary{
+      background: linear-gradient(180deg, var(--pink), var(--red));
+      color:white;
+      box-shadow: 0 14px 26px rgba(225,29,72,.22);
+      border:1px solid rgba(255,255,255,.28);
+    }
+    .btnPrimary:hover{ filter: brightness(1.02); transform: translateY(-1px); }
+    .btnGhost{
+      background: rgba(255,77,135,.10);
+      color:#7a1b3a;
+      border:1px solid rgba(255,77,135,.22);
+    }
+    .btnGhost:hover{ background: rgba(255,77,135,.14); }
+
+    .status{
+      margin-top:10px;
+      font-size:12px;
+      color:var(--muted);
+      min-height: 18px;
+    }
+    .status.ok{ color: #0f7a3d; font-weight:800; }
+    .status.err{ color: #b42318; font-weight:800; }
+
+    footer{
+      text-align:center;
+      padding: 18px 16px 28px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .tiny{
+      opacity:.9;
+      line-height:1.35;
+    }
   </style>
 </head>
 <body>
+  <header>
+    <div class="badge"><span class="dot"></span><span><b>4EK</b> Valentines Mailboxes</span></div>
+    <h1>Send a Kind Note 💌</h1>
+    <p class="sub">
+      Click a mailbox to read notes for that person, or leave them a Valentine gram.
+      <strong>Keep it kind</strong> (inside jokes are okay as long as they’re still nice).
+      <br>
+      Tip: You can leave the <strong>From</strong> section blank if you want to be anonymous.
+    </p>
+  </header>
+
   <div class="wrap">
     <div class="topbar">
-      <div class="ornate">. ݁₊ ⊹ . ݁˖ . ݁. ݁₊ ⊹ . ݁˖ . ݁. ݁₊ ⊹ . ݁˖ . ݁. ݁₊ ⊹ . ݁˖ . ݁</div>
-      <div class="head">
-        <h1 class="title">4EK <span style="color:var(--gold)">Valentine Mailboxes</span></h1>
-        <div class="subtitle">2026 • University of Central Florida • 4EVER KNIGHTS</div>
-        <div class="ruleline"></div>
-        <div class="flourish">❦</div>
-        <p class="intro">
-          Click a mailbox to open it and read what’s inside. Leave a note at the bottom.
-          <br><br>
-          <span class="rules">
-            <strong>Rules:</strong> kind messages only • no romantic pressure • no profanity
-          </span>
-        </p>
+      <div class="search" role="search">
+        <span aria-hidden="true">🔎</span>
+        <input id="q" type="text" placeholder="Search name…" autocomplete="off">
+      </div>
+      <div class="pill" title="Backend status">
+        <span aria-hidden="true">⚡</span>
+        <span>Backend: <b id="apiStatus">checking…</b></span>
+      </div>
+      <div class="pill">
+        <span aria-hidden="true">💗</span>
+        <span><b id="totalPeople">25</b> mailboxes</span>
       </div>
     </div>
 
-    <div id="mailboxGrid" class="grid" aria-label="Mailbox list"></div>
+    <div class="grid" id="grid" aria-label="Mailbox grid"></div>
+  </div>
 
-    <div class="layout">
-      <div class="panel" aria-live="polite">
-        <div class="hd">
-          <h2 id="openTitle">Open a mailbox</h2>
-          <div class="status" id="loadStatus"></div>
+  <!-- Modal -->
+  <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-label="Mailbox modal">
+    <div class="modal" role="document">
+      <div class="modalHeader">
+        <div class="mhLeft">
+          <div class="mailbox" aria-hidden="true" style="transform:scale(.92);">
+            <div class="lid"></div><div class="slot"></div><div class="box"></div><div class="post"></div><div class="flag"></div><div class="heart"></div>
+          </div>
+          <div class="mhTitle">
+            <div class="to" id="modalTo">Mailbox</div>
+            <div class="hint" id="modalHint">Loading…</div>
+          </div>
         </div>
-        <div class="bd" id="notesArea">
-          <div class="empty">Pick a mailbox above to see the notes inside.</div>
-        </div>
+        <button class="closeBtn" id="closeBtn" type="button">Close ✕</button>
       </div>
 
-      <div class="panel">
-        <div class="hd">
-          <h2>Write a note</h2>
-          <div class="status" id="composeStatus"></div>
+      <div class="modalBody">
+        <div class="notesPane">
+          <div id="notes"></div>
         </div>
-        <div class="bd">
-          <label for="toSelect">To</label>
-          <select id="toSelect"></select>
 
-          <label for="message">Message</label>
-          <textarea id="message" placeholder="Write your note…"></textarea>
-
-          <label for="signature">Signature (optional)</label>
-          <input id="signature" type="text" placeholder="Leave blank to be anonymous" />
-
-          <input id="company" type="text" style="display:none" tabindex="-1" autocomplete="off" />
-
-          <div class="actions">
-            <button class="btn" id="sendBtn" type="button">Sign & Send</button>
-            <button class="btn secondary" id="clearBtn" type="button">Clear</button>
+        <div class="composer">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+            <div style="font-weight:900;">Leave a note</div>
+            <div class="count" title="Messages in this mailbox"><span class="heartDot"></span><span id="mailCount">0</span></div>
           </div>
 
-          <div class="small">Notes appear instantly after sending.</div>
+          <label for="fromInput">From (optional — leave blank to be anonymous)</label>
+          <input id="fromInput" type="text" maxlength="60" placeholder="Your name (optional)">
+
+          <label for="msgInput">Your message</label>
+          <textarea id="msgInput" maxlength="1200" placeholder="Write something kind…"></textarea>
+
+          <div class="help">No login needed. Please keep it respectful and supportive.</div>
+
+          <div class="actions">
+            <button class="btn btnPrimary" id="sendBtn" type="button">Send 💌</button>
+            <button class="btn btnGhost" id="clearBtn" type="button">Clear</button>
+          </div>
+
+          <div class="status" id="status"></div>
         </div>
       </div>
     </div>
   </div>
 
-  <script>
-    /***********************
-     * CONFIG (UPDATED ✅)
-     ***********************/
-    const API_URL = "https://script.google.com/macros/s/AKfycbx1cKc_5vESx9v3764CEJLu8A3Wn2Nwe8pWBGz0mrnT91kLJOmuW9SzZy3LY8PnI66UnA/exec";
+  <footer>
+    <div class="tiny">4Ever Knights • University of Central Florida</div>
+  </footer>
 
-    const AMBASSADORS = [
-      { name:"Anna", slug:"anna" },
-      { name:"Abigail", slug:"abigail" },
-      { name:"Adrian", slug:"adrian" },
-      { name:"Alayna", slug:"alayna" },
-      { name:"Anjali", slug:"anjali" },
-      { name:"Armaan", slug:"armaan" },
-      { name:"Axani", slug:"axani" },
-      { name:"Brooke", slug:"brooke" },
-      { name:"Chloe", slug:"chloe" },
-      { name:"Colin", slug:"colin" },
-      { name:"Ella", slug:"ella" },
-      { name:"Gabe", slug:"gabe" },
-      { name:"Hannah", slug:"hannah" },
-      { name:"Jaya", slug:"jaya" },
-      { name:"Julia", slug:"julia" },
-      { name:"Makenzie", slug:"makenzie" },
-      { name:"Mitchell", slug:"mitchell" },
-      { name:"Neha", slug:"neha" },
-      { name:"Olivia", slug:"olivia" },
-      { name:"Sam", slug:"sam" },
-      { name:"Sarah", slug:"sarah" },
-      { name:"Sruthi", slug:"sruthi" },
-      { name:"Stella", slug:"stella" },
-      { name:"Subrina", slug:"subrina" },
-      { name:"Tylia", slug:"tylia" }
+  <script>
+    // ===== CONFIG =====
+    const API_BASE = "https://script.google.com/macros/s/AKfycbx1cKc_5vESx9v3764CEJLu8A3Wn2Nwe8pWBGz0mrnT91kLJOmuW9SzZy3LY8PnI66UnA/exec";
+
+    // EXACT 25 mailboxes (First name only)
+    const PEOPLE = [
+      "Anna Poulton",
+      "Abigail Johnson",
+      "Adrian Gavrilovie",
+      "Alayna Feilmeier",
+      "Anjali Murali",
+      "Armaan Gandhi",
+      "Axani Turin",
+      "Brooke Carter",
+      "Chloe Lowman",
+      "Colin Mackle",
+      "Ella Shockley",
+      "Gabe Irizarry",
+      "Hannah Ashton",
+      "Jaya Persaud",
+      "Julia Saldarriaga",
+      "Makenzie Ganey",
+      "Mitchell Cooper",
+      "Neha Jaisankar",
+      "Olivia Santos",
+      "Sam Billones",
+      "Sarah Mouton",
+      "Sruthi Moorthy",
+      "Stella Lagos",
+      "Subrina Seerattan",
+      "Tylia Brown"
     ];
 
-    const PROFANITY = ["fuck","shit","bitch","asshole","dick","pussy","cunt","slut","whore","nigger","faggot"];
+    // ===== UTILS =====
+    const $ = (id)=>document.getElementById(id);
+    const esc = (s)=>String(s??"").replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));
+    const slugify = (fullName)=>{
+      const first = String(fullName||"").trim().split(/\s+/)[0] || "";
+      return first.toLowerCase().replace(/[^a-z0-9]/g,"");
+    };
+    const firstName = (fullName)=>String(fullName||"").trim().split(/\s+/)[0] || fullName;
 
-    function escapeRegExp(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
-    function containsProfanity(text){
-      const t = (text || "").toLowerCase();
-      return PROFANITY.some(w => new RegExp(`\\b${escapeRegExp(w)}\\b`, "i").test(t));
-    }
-
-    const elGrid   = document.getElementById("mailboxGrid");
-    const elTo     = document.getElementById("toSelect");
-    const elMsg    = document.getElementById("message");
-    const elSig    = document.getElementById("signature");
-    const elBot    = document.getElementById("company");
-    const elSend   = document.getElementById("sendBtn");
-    const elClear  = document.getElementById("clearBtn");
-
-    const elTitle  = document.getElementById("openTitle");
-    const elNotes  = document.getElementById("notesArea");
-    const elLoadSt = document.getElementById("loadStatus");
-    const elCompSt = document.getElementById("composeStatus");
-
-    let currentMailbox = null;
-
-    function init(){
-      elTo.innerHTML = AMBASSADORS.map(a => `<option value="${a.slug}">${a.name}</option>`).join("");
-
-      elGrid.innerHTML = AMBASSADORS.map(a => `
-        <div class="card" role="button" tabindex="0" data-mailbox="${a.slug}" aria-label="Open mailbox for ${a.name}">
-          <div class="row">
-            <div class="mailbox" aria-hidden="true"></div>
-            <div>
-              <p class="name">${escapeHTML(a.name)}</p>
-              <div class="meta">Click to open</div>
-            </div>
-          </div>
-        </div>
-      `).join("");
-
-      elGrid.querySelectorAll("[data-mailbox]").forEach(btn => {
-        btn.addEventListener("click", () => openMailbox(btn.getAttribute("data-mailbox")));
-        btn.addEventListener("keydown", (e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            openMailbox(btn.getAttribute("data-mailbox"));
-          }
-        });
-      });
-
-      elSend.addEventListener("click", onSend);
-      elClear.addEventListener("click", () => {
-        elMsg.value = "";
-        elSig.value = "";
-        setComposeStatus("", "");
-      });
-    }
-
-    async function openMailbox(slug){
-      const amb = AMBASSADORS.find(a => a.slug === slug);
-      if(!amb) return;
-
-      currentMailbox = slug;
-      elTitle.textContent = `Mailbox: ${amb.name}`;
-      elNotes.innerHTML = `<div class="empty">Loading notes…</div>`;
-      setLoadStatus("Loading…", "");
-
+    function fmtTime(ts){
+      if(!ts) return "";
       try{
-        const url = `${API_URL}?action=list&to=${encodeURIComponent(slug)}&t=${Date.now()}`;
-        const res = await fetch(url);
-        if(!res.ok) throw new Error(`API error: ${res.status}`);
-        const data = await res.json();
-
-        const notes = Array.isArray(data.notes) ? data.notes : [];
-        renderNotes(notes, amb.name);
-        setLoadStatus(`${notes.length} note(s)`, "ok");
-      }catch(err){
-        console.error(err);
-        elNotes.innerHTML = `<div class="empty">Couldn’t load notes right now. Try again in a minute.</div>`;
-        setLoadStatus("Load failed", "err");
-      }
+        const d = new Date(Number(ts));
+        return d.toLocaleString(undefined, {month:"short", day:"numeric", hour:"numeric", minute:"2-digit"});
+      }catch{ return ""; }
     }
 
-    function renderNotes(notes, mailboxName){
+    async function apiGetList(toSlug){
+      const url = API_BASE + "?action=list&to=" + encodeURIComponent(toSlug);
+      const res = await fetch(url, { method:"GET" });
+      if(!res.ok) throw new Error("HTTP " + res.status);
+      const data = await res.json();
+      if(!data || data.ok !== true) throw new Error(data && data.error ? data.error : "Bad response");
+      return data.notes || [];
+    }
+
+    async function apiPostNote(toSlug, message, from){
+      const res = await fetch(API_BASE, {
+        method:"POST",
+        headers: { "Content-Type":"application/json" },
+        body: JSON.stringify({ to: toSlug, message, from })
+      });
+      if(!res.ok) throw new Error("HTTP " + res.status);
+      const data = await res.json();
+      if(!data || data.ok !== true) throw new Error(data && data.error ? data.error : "Bad response");
+      return true;
+    }
+
+    // ===== UI RENDER =====
+    const grid = $("grid");
+    const q = $("q");
+    const overlay = $("overlay");
+    const closeBtn = $("closeBtn");
+    const modalTo = $("modalTo");
+    const modalHint = $("modalHint");
+    const notesEl = $("notes");
+    const mailCount = $("mailCount");
+    const fromInput = $("fromInput");
+    const msgInput = $("msgInput");
+    const sendBtn = $("sendBtn");
+    const clearBtn = $("clearBtn");
+    const statusEl = $("status");
+    const apiStatus = $("apiStatus");
+    const totalPeople = $("totalPeople");
+
+    totalPeople.textContent = String(PEOPLE.length);
+
+    const state = {
+      open: false,
+      activeName: "",
+      activeSlug: "",
+      counts: new Map(), // slug -> count
+      cachedNotes: new Map() // slug -> notes array
+    };
+
+    function mailboxCard(name){
+      const slug = slugify(name);
+      const shown = firstName(name);
+      const count = state.counts.get(slug);
+      const countLabel = (typeof count === "number") ? count : "—";
+
+      return `
+        <button class="card" type="button" data-name="${esc(name)}" data-slug="${esc(slug)}" aria-label="Open mailbox for ${esc(shown)}">
+          <div class="mailbox" aria-hidden="true">
+            <div class="lid"></div>
+            <div class="slot"></div>
+            <div class="box"></div>
+            <div class="post"></div>
+            <div class="flag"></div>
+            <div class="heart"></div>
+          </div>
+          <div class="name">${esc(shown)}</div>
+          <div class="slug">@${esc(slug)}</div>
+          <div class="mini">
+            <span class="count"><span class="heartDot"></span><span>${esc(countLabel)}</span></span>
+            <span aria-hidden="true">Open ➜</span>
+          </div>
+        </button>
+      `;
+    }
+
+    function renderGrid(){
+      const term = (q.value || "").trim().toLowerCase();
+      const filtered = PEOPLE.filter(n=>{
+        if(!term) return true;
+        return n.toLowerCase().includes(term) || slugify(n).includes(term) || firstName(n).toLowerCase().includes(term);
+      });
+      grid.innerHTML = filtered.map(mailboxCard).join("");
+    }
+
+    function setStatus(msg, kind){
+      statusEl.textContent = msg || "";
+      statusEl.className = "status" + (kind ? (" " + kind) : "");
+    }
+
+    function openModal(name, slug){
+      state.open = true;
+      state.activeName = name;
+      state.activeSlug = slug;
+      modalTo.textContent = firstName(name) + "’s mailbox";
+      modalHint.textContent = "Loading notes…";
+      notesEl.innerHTML = "";
+      mailCount.textContent = "—";
+      setStatus("", "");
+      overlay.classList.add("show");
+      // load notes
+      loadMailbox(slug);
+      // focus
+      setTimeout(()=>msgInput.focus(), 50);
+    }
+
+    function closeModal(){
+      state.open = false;
+      state.activeName = "";
+      state.activeSlug = "";
+      overlay.classList.remove("show");
+      setStatus("", "");
+    }
+
+    function renderNotes(notes){
+      mailCount.textContent = String(notes.length || 0);
+      modalHint.textContent = notes.length ? "Notes inside 💗" : "No notes yet — be the first!";
       if(!notes.length){
-        elNotes.innerHTML = `<div class="empty">No notes yet for <strong>${escapeHTML(mailboxName)}</strong>. Be the first 💌</div>`;
+        notesEl.innerHTML = `
+          <div class="empty">
+            Nothing in here yet!<br>
+            Leave a kind note on the right 💌
+          </div>
+        `;
         return;
       }
-      notes.sort((a,b) => (b.ts||0) - (a.ts||0));
-      elNotes.innerHTML = notes.map(n => {
-        const from = (n.from && n.from.trim()) ? n.from.trim() : "Anonymous";
+      notesEl.innerHTML = notes.map(n=>{
+        const from = (n.from && String(n.from).trim()) ? String(n.from).trim() : "Anonymous";
+        const when = fmtTime(n.ts);
         return `
-          <div class="note">
-            <p class="msg">${escapeHTML(n.message || "")}</p>
-            <div class="from">— ${escapeHTML(from)}</div>
+          <div class="noteCard">
+            <p class="noteMsg">${esc(n.message || "")}</p>
+            <div class="noteMeta">
+              <span class="from">— ${esc(from)}</span>
+              <span>${esc(when)}</span>
+            </div>
           </div>
         `;
       }).join("");
     }
 
-    async function onSend(){
-      const to = elTo.value;
-      const amb = AMBASSADORS.find(a => a.slug === to);
-
-      const message = (elMsg.value || "").trim();
-      const signature = (elSig.value || "").trim();
-
-      if(!amb){
-        setComposeStatus("Choose a recipient.", "err");
-        return;
+    async function loadMailbox(slug){
+      try{
+        const notes = await apiGetList(slug);
+        state.cachedNotes.set(slug, notes);
+        state.counts.set(slug, notes.length);
+        renderNotes(notes);
+        // update grid counts without losing scroll
+        const activeTerm = q.value;
+        renderGrid();
+        q.value = activeTerm;
+      }catch(err){
+        modalHint.textContent = "Couldn’t load notes";
+        notesEl.innerHTML = `
+          <div class="empty">
+            <b>Load failed.</b><br>
+            This usually means the Apps Script Web App isn’t deployed with access set to <b>Anyone</b>,
+            or the endpoint isn’t returning JSON.<br><br>
+            Error: <code>${esc(err && err.message ? err.message : err)}</code>
+          </div>
+        `;
+        mailCount.textContent = "—";
       }
-      if(elBot.value){
-        setComposeStatus("Couldn’t send. Try again.", "err");
-        return;
-      }
+    }
+
+    // ===== EVENTS =====
+    grid.addEventListener("click", (e)=>{
+      const btn = e.target.closest(".card");
+      if(!btn) return;
+      openModal(btn.dataset.name, btn.dataset.slug);
+    });
+
+    q.addEventListener("input", renderGrid);
+
+    overlay.addEventListener("click", (e)=>{
+      if(e.target === overlay) closeModal();
+    });
+    closeBtn.addEventListener("click", closeModal);
+    document.addEventListener("keydown", (e)=>{
+      if(e.key === "Escape" && state.open) closeModal();
+    });
+
+    clearBtn.addEventListener("click", ()=>{
+      fromInput.value = "";
+      msgInput.value = "";
+      setStatus("", "");
+      msgInput.focus();
+    });
+
+    sendBtn.addEventListener("click", async ()=>{
+      const slug = state.activeSlug;
+      if(!slug){ return; }
+
+      const from = fromInput.value.trim();
+      const message = msgInput.value.trim();
+
       if(message.length < 2){
-        setComposeStatus("Write a message before sending.", "err");
+        setStatus("Please write a message first 💗", "err");
         return;
       }
       if(message.length > 1200){
-        setComposeStatus("Keep it under 1200 characters.", "err");
-        return;
-      }
-      if(containsProfanity(message) || containsProfanity(signature)){
-        setComposeStatus("Please remove profanity and try again.", "err");
+        setStatus("Message is too long (max 1200 characters).", "err");
         return;
       }
 
-      setComposeStatus("Sending…", "");
+      setStatus("Sending…", "");
+      sendBtn.disabled = true;
 
       try{
-        const payload = { to, message, from: signature };
-        const res = await fetch(API_URL, {
-          method: "POST",
-          headers: { "Content-Type":"text/plain;charset=utf-8" },
-          body: JSON.stringify(payload)
-        });
-
-        const data = await res.json().catch(()=>({}));
-        if(!res.ok || data.ok !== true){
-          throw new Error(data.error || `Send failed (${res.status})`);
-        }
-
-        setComposeStatus("Sent 💛", "ok");
-        elMsg.value = "";
-        elSig.value = "";
-
-        openMailbox(to);
+        await apiPostNote(slug, message, from);
+        setStatus("Sent! 💌", "ok");
+        msgInput.value = "";
+        fromInput.value = "";
+        // refresh mailbox
+        await loadMailbox(slug);
       }catch(err){
-        console.error(err);
-        setComposeStatus("Couldn’t send. Try again.", "err");
+        setStatus("Couldn’t send: " + (err && err.message ? err.message : String(err)), "err");
+      }finally{
+        sendBtn.disabled = false;
+      }
+    });
+
+    // ===== Backend check + initial render =====
+    async function backendCheck(){
+      try{
+        // test with any slug (first mailbox)
+        const testSlug = slugify(PEOPLE[0]);
+        await apiGetList(testSlug);
+        apiStatus.textContent = "connected";
+      }catch{
+        apiStatus.textContent = "not connected";
       }
     }
 
-    function setLoadStatus(text, kind){
-      elLoadSt.textContent = text || "";
-      elLoadSt.className = "status" + (kind ? " " + kind : "");
-    }
-    function setComposeStatus(text, kind){
-      elCompSt.textContent = text || "";
-      elCompSt.className = "status" + (kind ? " " + kind : "");
-    }
-
-    function escapeHTML(s){
-      return String(s ?? "")
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#39;");
+    // Preload counts (best effort; runs sequentially to be gentle)
+    async function warmCounts(){
+      for(const n of PEOPLE){
+        const slug = slugify(n);
+        try{
+          const notes = await apiGetList(slug);
+          state.counts.set(slug, notes.length);
+        }catch{
+          // ignore
+        }
+      }
+      renderGrid();
     }
 
-    init();
+    renderGrid();
+    backendCheck();
+    // optional: warm counts after a short delay so the page appears instantly
+    setTimeout(warmCounts, 350);
   </script>
 </body>
 </html>
