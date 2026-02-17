@@ -145,7 +145,7 @@
       transform: translateY(-1px) scale(.99);
     }
 
-    /* Icon card (this is the “previous version” style: icon inside a nice tile) */
+    /* Icon card */
     .iconWrap{
       border-radius: 16px;
       padding: 14px;
@@ -160,9 +160,8 @@
       min-height: 160px;
     }
 
-    /* Actual mailbox icon (SVG) */
     .mbIcon{
-      width: 140px;              /* BIGGER icon */
+      width: 140px;
       height: 140px;
       display:block;
       filter: drop-shadow(0 10px 18px rgba(0,0,0,.25));
@@ -481,11 +480,6 @@
         <path d="M60 118h80c8 0 14 6 14 14v18c0 8-6 14-14 14H60c-8 0-14-6-14-14v-18c0-8 6-14 14-14Z" fill="url(#g2)"/>
         <path d="M60 118h80c8 0 14 6 14 14v3H46v-3c0-8 6-14 14-14Z" fill="rgba(0,0,0,.06)"/>
 
-        <!-- UCF-ish stamp -->
-        <circle cx="82" cy="86" r="18" fill="rgba(255,255,255,.25)"/>
-        <path d="M74 86c0-10 16-10 16 0s-16 10-16 0Z" fill="rgba(255,255,255,.35)"/>
-        <path d="M67 92c14 10 36 6 50-6" stroke="rgba(255,255,255,.35)" stroke-width="4" stroke-linecap="round"/>
-
         <!-- hearts on body -->
         <path d="M118 74c8-8 18 4 0 14c-18-10-8-22 0-14Z" fill="#ffd6e6" opacity=".95"/>
         <path d="M138 96c6-6 14 3 0 11c-14-8-6-17 0-11Z" fill="#ffe4ee" opacity=".85"/>
@@ -533,8 +527,11 @@
     async function loadNotes(personKey){
       notesEl.innerHTML = `<div class="empty">Loading notes… 💞</div>`;
       try{
-        const url = `${API_BASE}?action=list&to=${encodeURIComponent(personKey)}`;
-        const res = await fetch(url, { method:"GET" });
+        const url = `${API_BASE}?action=list&to=${encodeURIComponent(personKey)}&t=${Date.now()}`;
+        const res = await fetch(url, {
+          method:"GET",
+          cache:"no-store"
+        });
         if(!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         if(!data || data.ok !== true) throw new Error(data?.error || "Unknown error");
@@ -575,15 +572,26 @@
       setStatus("Sending…");
 
       try{
+        // IMPORTANT: Avoid CORS preflight by using a "simple" content-type.
+        // We still send JSON as plain text; Apps Script reads e.postData.contents.
+        const payload = JSON.stringify({ to: personKey, from, message });
+
         const res = await fetch(API_BASE, {
           method: "POST",
-          headers: { "Content-Type":"application/json" },
-          body: JSON.stringify({ to: personKey, from, message })
+          // Do NOT set application/json here (it triggers OPTIONS preflight and fails on Apps Script).
+          headers: { "Content-Type":"text/plain;charset=utf-8" },
+          body: payload,
+          cache: "no-store"
         });
 
-        const data = await res.json().catch(()=> ({}));
+        // Sometimes Apps Script returns HTML on error; handle gracefully
+        const text = await res.text();
+        let data = {};
+        try{ data = JSON.parse(text || "{}"); }catch(_){}
+
         if(!res.ok || data.ok !== true){
-          throw new Error(data?.error || `Send failed (HTTP ${res.status})`);
+          const fallback = text && text.slice(0, 180) ? ` (response: ${text.slice(0,180)}…)` : "";
+          throw new Error((data && data.error) ? data.error : `Send failed (HTTP ${res.status})${fallback}`);
         }
 
         msgInput.value = "";
